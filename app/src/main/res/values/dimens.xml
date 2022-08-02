@@ -1,0 +1,9 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="dp_16">16dp</dimen>
+    <dimen name="dp_8">8dp</dimen>
+    <dimen name="roundedBottomSheetCornerRadius">16dp</dimen>
+    <dimen name="roundedBottomSheetCornerRadiusTopPadding">8dp</dimen>
+    <dimen name="roundedBottomSheetCornerRadiusLeftPadding">8dp</dimen>
+    <dimen name="roundedBottomSheetCornerRadiusRightPadding">8dp</dimen>
+</resources>

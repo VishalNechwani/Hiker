@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/hikernavigationgraph"
+    app:startDestination="@id/companyListFragment">
+
+    <fragment
+        android:id="@+id/companyListFragment"
+        android:name="com.example.hiker.view.CompanyListFragment"
+        android:label="fragment_company_list"
+        tools:layout="@layout/fragment_company_list" >
+        <action
+            android:id="@+id/action_companyListFragment_to_salaryComponentPreviewFragment"
+            app:destination="@id/salaryComponentPreviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/salaryComponentPreviewFragment"
+        android:name="com.example.hiker.view.SalaryComponentPreviewFragment"
+        android:label="fragment_salary_component_preview"
+        tools:layout="@layout/fragment_salary_component_preview" />
+</navigation>
