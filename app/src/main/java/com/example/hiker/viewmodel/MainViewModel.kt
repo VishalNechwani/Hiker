@@ -11,9 +11,7 @@ class MainViewModel(val hikeRepository: HikeRepository) : ViewModel(){
     private var allHikes : LiveData<List<HikeEntity>>
     init {
         allHikes = hikeRepository.getAllHikes()
-        true
     }
-
 
     fun getHikes() : LiveData<List<HikeEntity>>{
         return allHikes

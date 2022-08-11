@@ -1,16 +1,11 @@
 package com.example.hiker.model
 
 import android.content.Context
-import androidx.room.ColumnInfo
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 
 @Database(entities = [HikeEntity::class], version = 1)
+@TypeConverters(RoomConverters::class)
 abstract class HikeDatabase  : RoomDatabase(){
 
     abstract fun hikerDao(): HikeDao
@@ -27,6 +22,7 @@ abstract class HikeDatabase  : RoomDatabase(){
                 )
                     .fallbackToDestructiveMigration()
                     .addCallback(roomCallback)
+                    .addTypeConverter(RoomConverters())
                     .build()
 
             return instance!!

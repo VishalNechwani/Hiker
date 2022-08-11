@@ -169,7 +169,18 @@ class SalaryComponentPreviewFragment : Fragment() {
         viewTaxOld.text = taxesOld.toString()
         viewSalaryNew.text = salaryNew.toString()
         viewSalaryOld.text = salaryOld.toString()
-        builder.show()
+        with(builder){
+            setPositiveButton("Save", DialogInterface.OnClickListener(function = saveClick))
+            setNegativeButton("Cancel", null)
+            show()
+        }
+    }
+
+    val saveClick = { dialog: DialogInterface, which: Int ->
+        //save the data into database
+
+
+
     }
 
 
