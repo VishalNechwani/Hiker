@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [HikeEntity::class], version = 1)
+@Database(entities = [HikeEntity::class], version = 2)
 @TypeConverters(RoomConverters::class)
 abstract class HikeDatabase  : RoomDatabase(){
 

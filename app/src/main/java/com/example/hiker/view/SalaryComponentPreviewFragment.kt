@@ -60,10 +60,10 @@ class SalaryComponentPreviewFragment : Fragment() {
     private lateinit var customAlertDialogView : View
     private lateinit var progressBar : View
     private lateinit var arrComponent : ArrayList<Component>
-    private lateinit var taxesNew : String
-    private lateinit var taxesOld : String
-    private lateinit var salaryNew : String
-    private lateinit var salaryOld : String
+    private var taxesNew : Int = 0
+    private var taxesOld : Int = 0
+    private var salaryNew : Int = 0
+    private var salaryOld : Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,7 +136,10 @@ class SalaryComponentPreviewFragment : Fragment() {
         var taxPercent = 0
         if (regime == REGIME.NEW_TAX_REGIME) {
             //tax as per new regime
-            if (taxableIncome >= 500000 && taxableIncome < 750000) {
+            if(taxableIncome<500000) {
+                taxPercent = 0
+            }
+            else if (taxableIncome >= 500000 && taxableIncome < 750000) {
                 taxPercent = 10
             } else if (taxableIncome >= 750000 && taxableIncome < 1000000) {
                 taxPercent = 15
@@ -150,7 +153,10 @@ class SalaryComponentPreviewFragment : Fragment() {
 
         } else {
             //tax as per old regime
-            if (taxableIncome >= 500000 && taxableIncome < 750000) {
+            if(taxableIncome<500000) {
+                taxPercent = 0
+            }
+            else if (taxableIncome >= 500000 && taxableIncome < 750000) {
                 taxPercent = 10
             } else if (taxableIncome >= 750000 && taxableIncome < 1000000) {
                 taxPercent = 20
@@ -174,10 +180,10 @@ class SalaryComponentPreviewFragment : Fragment() {
         }
         val taxPercentagesNew = taxCalculation(taxableSumIncome,regimeNew)
         val taxPercentagesOld = taxCalculation(taxableSumIncome,regimeOld)
-        val taxesNew = (taxableSumIncome * taxPercentagesNew)/100
-        val taxesOld = (taxableSumIncome * taxPercentagesOld)/100
-        val salaryNew  = ((taxableSumIncome - taxesOld)/12)
-        val salaryOld  = ((taxableSumIncome - (taxesOld)/100)/12)
+        taxesNew = (taxableSumIncome * taxPercentagesNew)/100
+        taxesOld = (taxableSumIncome * taxPercentagesOld)/100
+        salaryNew  = ((taxableSumIncome - taxesOld)/12)
+        salaryOld  = ((taxableSumIncome - (taxesOld)/100)/12)
         val builder = AlertDialog.Builder(context)
         val inflater = layoutInflater
         val finalInhandLayout = inflater.inflate(R.layout.final_in_hand_alert, null)
@@ -206,7 +212,7 @@ class SalaryComponentPreviewFragment : Fragment() {
     val saveClick = { dialog: DialogInterface, which: Int ->
         //save the data into database
         progressBar.visibility = View.VISIBLE
-        val hike = HikeEntity(0,companyName!!,arrComponent,currentCtc.toString(),ctc.toString(),salaryNew,salaryOld,taxesOld,taxesNew)
+        val hike = HikeEntity(0,companyName!!,arrComponent,currentCtc.toString(),ctc.toString(),salaryNew.toString(),salaryOld.toString(),taxesOld.toString(),taxesNew.toString())
         hikeViewModel.savingData(hike)
         findNavController().navigate(R.id.action_salaryComponentPreviewFragment_to_companyListFragment,null,null)
         progressBar.visibility = View.GONE
