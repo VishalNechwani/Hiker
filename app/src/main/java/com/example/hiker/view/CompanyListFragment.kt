@@ -1,6 +1,7 @@
 package com.example.hiker.view
 
 import android.os.Bundle
+import android.text.TextUtils.isEmpty
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.DataBindingUtil.setContentView
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -71,28 +73,32 @@ class CompanyListFragment : Fragment() {
         rv = companyListBinding.recyclerView
         val hikeNoListLayout = companyListBinding.noHikeListLayout
         val addButton =  companyListBinding.addButton
+        val txtView = companyListBinding.noHikesTxt
+        hikeNoListLayout.visibility = View.VISIBLE
         materialAlertDialogBuilder = MaterialAlertDialogBuilder(context!!)
         addButton.setOnClickListener {
 
-            customAlertDialogView = LayoutInflater.from(context)
+        customAlertDialogView = LayoutInflater.from(context)
                 .inflate(R.layout.companyintroalert, null, false)
 
-          val bottomSheetDialog = BottomSheetDialog()
+        val bottomSheetDialog = BottomSheetDialog()
           bottomSheetDialog.show(fragmentManager!!,"ModalBottomSheet")
             // Launching the custom alert dialog
 //            launchCustomAlertDialog()
         }
-        rv.visibility = View.GONE
-        hikeNoListLayout.visibility = View.GONE
         rv.layoutManager = LinearLayoutManager(context)
-        val hikeList =  hikeViewModel.getHikes()
-        val hikel = hikeList.value
-        if(hikel!=null){
-            val customAdapter = CompanyListAdapter(hikel)
-            rv.adapter = customAdapter
-        }else{
-            hikeNoListLayout.visibility = View.VISIBLE
-        }
+        hikeViewModel.getHikes().observe(this, Observer {
+            if (it.isNotEmpty()){
+                txtView.visibility = View.GONE
+                rv.visibility = View.VISIBLE
+                val customAdapter = CompanyListAdapter(it)
+                rv.adapter = customAdapter
+            }else{
+                rv.visibility = View.GONE
+                txtView.visibility = View.VISIBLE
+            }
+        })
+
     }
 
 

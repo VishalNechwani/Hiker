@@ -20,6 +20,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/noHikesTxt"
                 android:layout_height="wrap_content"
                 android:text="@string/no_hikes_list"
                 android:textAlignment="center"

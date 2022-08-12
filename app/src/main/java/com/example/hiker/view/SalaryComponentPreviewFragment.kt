@@ -14,6 +14,7 @@ import com.example.hiker.adapter.SalaryComponentAdapter
 import com.example.hiker.databinding.FragmentCompanyIntroBinding
 import com.example.hiker.databinding.FragmentSalaryComponentPreviewBinding
 import android.content.DialogInterface
+import android.text.Editable
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hiker.utils.Component
@@ -171,14 +172,19 @@ class SalaryComponentPreviewFragment : Fragment() {
         viewSalaryOld.text = salaryOld.toString()
         with(builder){
             setPositiveButton("Save", DialogInterface.OnClickListener(function = saveClick))
-            setNegativeButton("Cancel", null)
+            setNegativeButton("Cancel", DialogInterface.OnClickListener(function = cancelClick))
             show()
         }
     }
 
+    val cancelClick = { dialog: DialogInterface, which: Int ->
+        dialog.dismiss()
+    }
+
+
+
     val saveClick = { dialog: DialogInterface, which: Int ->
         //save the data into database
-
 
 
     }
@@ -192,39 +198,26 @@ class SalaryComponentPreviewFragment : Fragment() {
         val name = dialogLayout.findViewById<EditText>(R.id.component_add_edit_text)
         var select_layout = dialogLayout.findViewById<AutoCompleteTextView>(R.id.filled_exposed_dropdown)
         val value = dialogLayout.findViewById<EditText>(R.id.component_value_edit_text)
-        val cancelButton = dialogLayout.findViewById<Button>(R.id.cancel_alert)
-        val addButton = dialogLayout.findViewById<Button>(R.id.add_alert)
         var arrAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
             context!!,android.R.layout.simple_spinner_item,
             resources.getStringArray(R.array.component))
         select_layout.setAdapter(arrAdapter)
         builder.setView(dialogLayout)
-        cancelButton.setOnClickListener {
-
-        }
-        addButton.setOnClickListener {
-            //getting data from alert and adding to recycler view adapter
-            val nameValue = name.text.toString()
-            val valueValue = value.text.toString()
+        val addClick = { dialog: DialogInterface, which: Int ->
+            val nameValue = name.toString()
+            val valueValue = value.toString()
             if(name!=null && value!=null) {
-               //update the adapter
-               compAdapter.adapterUpdate(Component(nameValue,valueValue,true))
+                //update the adapter
+                compAdapter.adapterUpdate(Component(nameValue,valueValue,true))
             }
         }
 
-//        builder.setNegativeButton("Cancel") {
-//                dialog,
-//                which -> dialog.dismiss()
-//        }
-//        builder.setPositiveButton("Add") { dialogInterface, i -> addComponent()}
-        builder.show()
-    }
-
-    private fun addComponent() {
-        // need to add the component value
-
-    }
-
+        with(builder){
+            setPositiveButton("Add", DialogInterface.OnClickListener(function = addClick))
+            setNegativeButton("Cancel", DialogInterface.OnClickListener(function = cancelClick))
+            show()
+        }
+      }
 
     companion object {
         /**
