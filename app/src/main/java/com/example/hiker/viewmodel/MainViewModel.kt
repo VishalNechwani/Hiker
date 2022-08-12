@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.hiker.model.HikeEntity
 import com.example.hiker.model.HikeRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class MainViewModel(val hikeRepository: HikeRepository) : ViewModel(){
@@ -17,6 +20,13 @@ class MainViewModel(val hikeRepository: HikeRepository) : ViewModel(){
         return allHikes
     }
 
+    fun savingData(hikeEntity:HikeEntity){
+        GlobalScope.launch{
+            with(Dispatchers.IO){
+                    hikeRepository.addHike(hikeEntity)
+            }
+        }
+    }
 
 
 

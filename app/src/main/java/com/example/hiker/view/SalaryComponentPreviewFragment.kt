@@ -16,8 +16,16 @@ import com.example.hiker.databinding.FragmentSalaryComponentPreviewBinding
 import android.content.DialogInterface
 import android.text.Editable
 import android.widget.*
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.ColumnInfo
+import androidx.room.PrimaryKey
+import com.example.hiker.HikerApplication
+import com.example.hiker.model.HikeEntity
 import com.example.hiker.utils.Component
+import com.example.hiker.viewmodel.MainViewModel
+import com.example.hiker.viewmodel.MainViewModelFactory
 import com.google.android.material.textview.MaterialTextView
 import java.util.*
 import kotlin.collections.ArrayList
@@ -43,12 +51,19 @@ enum class REGIME{
 class SalaryComponentPreviewFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var companyName: String? = null
-    private var ctc: Int = 0
-    private var currentCtc: Int = 0
+    private var ctc: Int = 0  //this is expected
+    private var currentCtc: Int = 0  // this is current
     private lateinit var salaryComponentBinding: FragmentSalaryComponentPreviewBinding
+    private lateinit var hikeViewModel : MainViewModel
     private lateinit var rv: RecyclerView
     private lateinit var compAdapter: SalaryComponentAdapter
     private lateinit var customAlertDialogView : View
+    private lateinit var progressBar : View
+    private lateinit var arrComponent : ArrayList<Component>
+    private lateinit var taxesNew : String
+    private lateinit var taxesOld : String
+    private lateinit var salaryNew : String
+    private lateinit var salaryOld : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +82,9 @@ class SalaryComponentPreviewFragment : Fragment() {
         salaryComponentBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_salary_component_preview, container, false
         );
+        hikeViewModel = ViewModelProvider(this,
+            MainViewModelFactory(HikerApplication.getRepositoryInstance()!!)
+        )[MainViewModel::class.java]
         return salaryComponentBinding.root
     }
 
@@ -81,6 +99,8 @@ class SalaryComponentPreviewFragment : Fragment() {
         rv = salaryComponentBinding.recyclerView
         val finalInHand = salaryComponentBinding.finalInHandButton
         val addComponentButton = salaryComponentBinding.addComponentButton
+        progressBar = salaryComponentBinding.progressBar
+        progressBar.visibility = View.GONE
         val basicPay = (ctc.times(40)).div(100)
         val hra = (basicPay.times(50)).div(100)
         val pf = (basicPay.times(12)).div(100)
@@ -94,7 +114,7 @@ class SalaryComponentPreviewFragment : Fragment() {
         val gratuityString = gratuity.toString()
         val compArr = ArrayList<String>()
         val valueArr = ArrayList<String>()
-        val arrComponent = ArrayList<Component>();
+        arrComponent = ArrayList<Component>();
         arrComponent.add(Component("Basic Pay", basicPayString, true))
         arrComponent.add(Component("HRA", hraString, true))
         arrComponent.add(Component("Other Allowances", otherAllowancesString, true))
@@ -185,8 +205,11 @@ class SalaryComponentPreviewFragment : Fragment() {
 
     val saveClick = { dialog: DialogInterface, which: Int ->
         //save the data into database
-
-
+        progressBar.visibility = View.VISIBLE
+        val hike = HikeEntity(0,companyName!!,arrComponent,currentCtc.toString(),ctc.toString(),salaryNew,salaryOld,taxesOld,taxesNew)
+        hikeViewModel.savingData(hike)
+        findNavController().navigate(R.id.action_salaryComponentPreviewFragment_to_companyListFragment,null,null)
+        progressBar.visibility = View.GONE
     }
 
 

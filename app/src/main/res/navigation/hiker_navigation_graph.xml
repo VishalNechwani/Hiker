@@ -18,5 +18,9 @@
         android:id="@+id/salaryComponentPreviewFragment"
         android:name="com.example.hiker.view.SalaryComponentPreviewFragment"
         android:label="fragment_salary_component_preview"
-        tools:layout="@layout/fragment_salary_component_preview" />
+        tools:layout="@layout/fragment_salary_component_preview" >
+        <action
+            android:id="@+id/action_salaryComponentPreviewFragment_to_companyListFragment"
+            app:destination="@id/companyListFragment" />
+    </fragment>
 </navigation>
