@@ -1,7 +1,6 @@
 package com.example.hiker.view
 
 import android.app.AlertDialog
-import android.app.Application
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,25 +10,20 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hiker.R
 import com.example.hiker.adapter.SalaryComponentAdapter
-import com.example.hiker.databinding.FragmentCompanyIntroBinding
 import com.example.hiker.databinding.FragmentSalaryComponentPreviewBinding
 import android.content.DialogInterface
-import android.text.Editable
+import android.os.AsyncTask
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
 import com.example.hiker.HikerApplication
 import com.example.hiker.model.HikeEntity
 import com.example.hiker.utils.Component
 import com.example.hiker.viewmodel.MainViewModel
 import com.example.hiker.viewmodel.MainViewModelFactory
 import com.google.android.material.textview.MaterialTextView
-import java.util.*
 import kotlin.collections.ArrayList
-
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,12 +52,13 @@ class SalaryComponentPreviewFragment : Fragment() {
     private lateinit var rv: RecyclerView
     private lateinit var compAdapter: SalaryComponentAdapter
     private lateinit var customAlertDialogView : View
-    private lateinit var progressBar : View
     private lateinit var arrComponent : ArrayList<Component>
+    private lateinit var  progressCircle : ProgressBar
     private var taxesNew : Int = 0
     private var taxesOld : Int = 0
     private var salaryNew : Int = 0
     private var salaryOld : Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,10 +92,10 @@ class SalaryComponentPreviewFragment : Fragment() {
         customAlertDialogView = LayoutInflater.from(context)
             .inflate(R.layout.companyintroalert, null, false)
         rv = salaryComponentBinding.recyclerView
+        progressCircle = salaryComponentBinding.progressBar
+        progressCircle.visibility = View.GONE
         val finalInHand = salaryComponentBinding.finalInHandButton
         val addComponentButton = salaryComponentBinding.addComponentButton
-        progressBar = salaryComponentBinding.progressBar
-        progressBar.visibility = View.GONE
         val basicPay = (ctc.times(40)).div(100)
         val hra = (basicPay.times(50)).div(100)
         val pf = (basicPay.times(12)).div(100)
@@ -197,26 +192,34 @@ class SalaryComponentPreviewFragment : Fragment() {
         viewSalaryNew.text = salaryNew.toString()
         viewSalaryOld.text = salaryOld.toString()
         with(builder){
-            setPositiveButton("Save", DialogInterface.OnClickListener(function = saveClick))
+            setPositiveButton("Save", DialogInterface.OnClickListener {
+                    dialog, id -> saveButton()
+            })
             setNegativeButton("Cancel", DialogInterface.OnClickListener(function = cancelClick))
             show()
         }
+    }
+
+    private fun saveButton() {
+        val hike = HikeEntity(0,companyName!!,arrComponent,currentCtc.toString(),ctc.toString(),salaryNew.toString(),salaryOld.toString(),taxesOld.toString(),taxesNew.toString())
+        AsyncTaskForSave().execute(hike)
     }
 
     val cancelClick = { dialog: DialogInterface, which: Int ->
         dialog.dismiss()
     }
 
+//    val saveButton = { dialog: DialogInterface, which: Int ->
+//        val hike = HikeEntity(0,companyName!!,arrComponent,currentCtc.toString(),ctc.toString(),salaryNew.toString(),salaryOld.toString(),taxesOld.toString(),taxesNew.toString())
+//        AsyncTaskForSave().execute(hike)
+//    }
 
-
-    val saveClick = { dialog: DialogInterface, which: Int ->
-        //save the data into database
-        progressBar.visibility = View.VISIBLE
-        val hike = HikeEntity(0,companyName!!,arrComponent,currentCtc.toString(),ctc.toString(),salaryNew.toString(),salaryOld.toString(),taxesOld.toString(),taxesNew.toString())
-        hikeViewModel.savingData(hike)
-        findNavController().navigate(R.id.action_salaryComponentPreviewFragment_to_companyListFragment,null,null)
-        progressBar.visibility = View.GONE
-    }
+//    val saveClick = { dialog: DialogInterface, which: Int ->
+//        //save the data into database
+//        val hike = HikeEntity(0,companyName!!,arrComponent,currentCtc.toString(),ctc.toString(),salaryNew.toString(),salaryOld.toString(),taxesOld.toString(),taxesNew.toString())
+//        AsyncTaskForSave().execute(hike)
+//    //        hikeViewModel.savingData(hike)
+//    }
 
 
 
@@ -247,6 +250,30 @@ class SalaryComponentPreviewFragment : Fragment() {
             show()
         }
       }
+
+    inner class AsyncTaskForSave: AsyncTask<HikeEntity,Void,Long>() {
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+            progressCircle.visibility = View.VISIBLE
+        }
+
+        override fun doInBackground(vararg params: HikeEntity?): Long {
+           return hikeViewModel.savingData(params[0]!!)
+        }
+
+        override fun onPostExecute(result: Long?) {
+            super.onPostExecute(result)
+            if(result!!>0){
+                progressCircle.visibility = View.GONE
+                findNavController().navigate(R.id.action_salaryComponentPreviewFragment_to_companyListFragment,null,null)
+            }else{
+
+            }
+
+        }
+    }
+
 
     companion object {
         /**

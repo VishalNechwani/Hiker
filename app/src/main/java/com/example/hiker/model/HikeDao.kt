@@ -13,5 +13,5 @@ interface HikeDao {
     fun getAll(): LiveData<List<HikeEntity>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addHike(hike: HikeEntity):Long
+    fun addHike(hike: HikeEntity):Long
 }

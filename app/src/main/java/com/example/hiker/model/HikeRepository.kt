@@ -11,7 +11,7 @@ class HikeRepository(val dao: HikeDao) {
     }
 
     //insert hike details to room
-    suspend fun addHike(hike: HikeEntity) : Long {
+    fun addHike(hike: HikeEntity) : Long {
         return dao.addHike(hike)
     }
 

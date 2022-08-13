@@ -20,7 +20,7 @@ class CompanyListAdapter(val hikeList:List<HikeEntity>) : RecyclerView.Adapter<C
   }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.companyName.text = hikeList.get(position).company_id.toString()
+        holder.companyName.text = hikeList.get(position).company_name
         holder.inHandSalary.text = hikeList.get(position).inHandNew
         holder.componentList.adapter = CompanyListSubComponentAdapter(hikeList.get(position).component_arr)
     }
