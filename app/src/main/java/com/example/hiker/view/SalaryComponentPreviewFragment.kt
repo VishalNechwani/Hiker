@@ -23,6 +23,11 @@ import com.example.hiker.utils.Component
 import com.example.hiker.viewmodel.MainViewModel
 import com.example.hiker.viewmodel.MainViewModelFactory
 import com.google.android.material.textview.MaterialTextView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
@@ -256,6 +261,10 @@ class SalaryComponentPreviewFragment : Fragment() {
         override fun onPreExecute() {
             super.onPreExecute()
             progressCircle.visibility = View.VISIBLE
+            CoroutineScope(Main).launch {
+                delay(8000)
+                return@launch
+            }
         }
 
         override fun doInBackground(vararg params: HikeEntity?): Long {
