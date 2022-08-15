@@ -14,7 +14,7 @@
     <string name="no_hikes_list">There are no hikes till now, waiting for your hike :)</string>
     <string name="company_name">Enter the company name</string>
     <string name="current_ctc">Enter current CTC</string>
-    <string name="expected_ctc">Enter expected CTC</string>
+    <string name="expected_ctc">Enter Hike Amount</string>
     <string name="preview">Calculate Inhand</string>
     <string name="add_component">Add Component</string>
     <string name="tax_deduction_section">Tax Deductions</string>

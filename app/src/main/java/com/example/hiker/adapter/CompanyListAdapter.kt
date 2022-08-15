@@ -24,7 +24,7 @@ class CompanyListAdapter(val hikeList:List<HikeEntity>) : RecyclerView.Adapter<C
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.companyName.text = hikeList.get(position).company_name
         holder.inHandSalary.text = hikeList.get(position).inHandNew
-        holder.componentList.adapter = CompanyListSubComponentAdapter(hikeList.get(position).component_arr)
+//        holder.componentList.adapter = CompanyListSubComponentAdapter(hikeList.get(position).component_arr)
         holder.card.isLongClickable = true
     }
 
@@ -44,7 +44,7 @@ class CompanyListAdapter(val hikeList:List<HikeEntity>) : RecyclerView.Adapter<C
         val card: CardView = itemView.findViewById(R.id.card_view)
         val companyName: TextView = itemView.findViewById(R.id.company_name)
         val inHandSalary: TextView = itemView.findViewById(R.id.in_hand_salary)
-        val componentList:RecyclerView = itemView.findViewById(R.id.component_list)
+//        val componentList:RecyclerView = itemView.findViewById(R.id.component_list)
 
     }
 }
