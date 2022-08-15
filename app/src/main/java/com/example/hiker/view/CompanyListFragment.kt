@@ -1,5 +1,6 @@
 package com.example.hiker.view
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -127,7 +128,8 @@ class CompanyListFragment : Fragment() {
         val error_message_textview = customAlertDialogView.findViewById<TextView>(R.id.error_message)
         val inHandTextView = customAlertDialogView.findViewById<TextView>(R.id.calculate_in_hand_Text)
         val cancelTextView = customAlertDialogView.findViewById<TextView>(R.id.cancel)
-
+        materialAlertDialogBuilder.setView(customAlertDialogView)
+        val alertDialog = materialAlertDialogBuilder.create()
         inHandTextView.setOnClickListener {
             val company = companyNameField.editText?.text.toString()
             val expectedCtc = expectedCTCField.editText?.text.toString()
@@ -146,12 +148,9 @@ class CompanyListFragment : Fragment() {
             bundle.putString("location",expectedCtc)
             bundle.putString("ctc",currentCtc)
             findNavController().navigate(R.id.action_companyListFragment_to_salaryComponentPreviewFragment,bundle,null)
-
+            alertDialog.dismiss()
         }
-
-        error_message = error_message_textview.text.toString()
-        materialAlertDialogBuilder.setView(customAlertDialogView)
-            .show()
+        alertDialog.show()
         companyNameField.requestFocus()
     }
 
