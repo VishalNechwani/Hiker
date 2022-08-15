@@ -1,6 +1,7 @@
 package com.example.hiker.view
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils.isEmpty
@@ -123,58 +124,44 @@ class CompanyListFragment : Fragment() {
         companyNameValue = customAlertDialogView.findViewById<TextInputEditText>(R.id.company_name_edit_text_alert)
         currentCtcValue = customAlertDialogView.findViewById<TextInputEditText>(R.id.current_ctc_edit_text_alert)
         expectedCtcValue = customAlertDialogView.findViewById<TextInputEditText>(R.id.expected_ctc_edit_text_alert)
-
-
-
-
-
-
-
-
-
         val error_message_textview = customAlertDialogView.findViewById<TextView>(R.id.error_message)
+        val inHandTextView = customAlertDialogView.findViewById<TextView>(R.id.calculate_in_hand_Text)
+        val cancelTextView = customAlertDialogView.findViewById<TextView>(R.id.cancel)
+
+        inHandTextView.setOnClickListener {
+            val company = companyNameField.editText?.text.toString()
+            val expectedCtc = expectedCTCField.editText?.text.toString()
+            val currentCtc = currentCTCField.editText?.text.toString()
+            val regexCompany = regexCompany(company)
+            if(!regexCompany){
+                error_message_textview.setTextColor(Color.parseColor("#ff0000"))
+                hikeViewModel.isCompanyNameProper = false
+                error_message_textview.text = "Error: contains only a-z, A-Z, 0-9"
+                error_message_textview.visibility = View.VISIBLE
+                return@setOnClickListener
+            }
+            error_message_textview.text = ""
+            val bundle = Bundle()
+            bundle.putString("company_name",company)
+            bundle.putString("location",expectedCtc)
+            bundle.putString("ctc",currentCtc)
+            findNavController().navigate(R.id.action_companyListFragment_to_salaryComponentPreviewFragment,bundle,null)
+
+        }
+
         error_message = error_message_textview.text.toString()
-
-
-
-
-
-
-        // Building the Alert dialog using materialAlertDialogBuilder instance
         materialAlertDialogBuilder.setView(customAlertDialogView)
-            .setPositiveButton("Calculate Inhand") { dialog, _ ->
-                val company = companyNameField.editText?.text.toString()
-                val expected = expectedCTCField.editText?.text.toString()
-
-
-                val regexCompany = regexCompany(company)
-                if(!regexCompany){
-                    error_message_textview.text = "Company Name Length less than 20 and Contains only a-z, A-Z, 0-9"
-                }
-                if(regexCompany){
-                    val bundle = Bundle()
-                    bundle.putString("company_name",company)
-                    bundle.putString("location",expected)
-                    bundle.putString("ctc","0")
-                    findNavController().navigate(R.id.action_companyListFragment_to_salaryComponentPreviewFragment,bundle,null)
-                    dialog.dismiss()
-                }
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
             .show()
-
         companyNameField.requestFocus()
     }
 
     private fun regexCompany(company: String): Boolean {
-        val regex = Regex("^[a-zA-Z][a-zA-Z0-9\\s]+$")
+        val regex = Regex("[a-zA-Z0-9\\s]+$")
         val matched = regex.containsMatchIn(input = company)
-        if(company.length>20 || !matched){
-            return false
+        if(company.length<20 && matched){
+            return true
         }
-        return true
+        return false
     }
 
 

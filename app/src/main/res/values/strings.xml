@@ -35,4 +35,6 @@
     <string name="old_regime">Old Regime</string>
     <string name="taxes">Taxes</string>
     <string name="in_hand_only">In Hand</string>
+    <string name="calculate_in_hand_only_alert">CALCULATE INHAND</string>
+    <string name="cancel_alert">CANCEL</string>
 </resources>
