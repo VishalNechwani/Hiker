@@ -20,8 +20,8 @@
     <string name="tax_deduction_section">Tax Deductions</string>
     <string name="in_hand">Final Inhand</string>
     <string name="component_type">Component Type</string>
-    <string name="component_name">Name</string>
-    <string name="component_value">Value</string>
+    <string name="component_name">Component Name</string>
+    <string name="component_value">Component Amount</string>
     <string name="add">Add</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
@@ -37,4 +37,6 @@
     <string name="in_hand_only">In Hand</string>
     <string name="calculate_in_hand_only_alert">CALCULATE INHAND</string>
     <string name="cancel_alert">CANCEL</string>
+    <string name="add_alert">ADD</string>
+
 </resources>

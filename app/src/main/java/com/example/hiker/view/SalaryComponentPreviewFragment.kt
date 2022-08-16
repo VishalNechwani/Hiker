@@ -214,20 +214,6 @@ class SalaryComponentPreviewFragment : Fragment() {
         dialog.dismiss()
     }
 
-//    val saveButton = { dialog: DialogInterface, which: Int ->
-//        val hike = HikeEntity(0,companyName!!,arrComponent,currentCtc.toString(),ctc.toString(),salaryNew.toString(),salaryOld.toString(),taxesOld.toString(),taxesNew.toString())
-//        AsyncTaskForSave().execute(hike)
-//    }
-
-//    val saveClick = { dialog: DialogInterface, which: Int ->
-//        //save the data into database
-//        val hike = HikeEntity(0,companyName!!,arrComponent,currentCtc.toString(),ctc.toString(),salaryNew.toString(),salaryOld.toString(),taxesOld.toString(),taxesNew.toString())
-//        AsyncTaskForSave().execute(hike)
-//    //        hikeViewModel.savingData(hike)
-//    }
-
-
-
     private fun showingAlert() {
         val builder = AlertDialog.Builder(context)
         val inflater = layoutInflater
@@ -235,11 +221,19 @@ class SalaryComponentPreviewFragment : Fragment() {
         val name = dialogLayout.findViewById<EditText>(R.id.component_add_edit_text)
         var select_layout = dialogLayout.findViewById<AutoCompleteTextView>(R.id.filled_exposed_dropdown)
         val value = dialogLayout.findViewById<EditText>(R.id.component_value_edit_text)
+        val addComponentTxtView = dialogLayout.findViewById<EditText>(R.id.add_component_button)
+        val cancelTxtView = dialogLayout.findViewById<EditText>(R.id.cancel_button)
+        //adding click to text views
+
+
+
+
         var arrAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
             context!!,android.R.layout.simple_spinner_item,
             resources.getStringArray(R.array.component))
         select_layout.setAdapter(arrAdapter)
         builder.setView(dialogLayout)
+
         val addClick = { dialog: DialogInterface, which: Int ->
             val nameValue = name.toString()
             val valueValue = value.toString()
@@ -248,6 +242,9 @@ class SalaryComponentPreviewFragment : Fragment() {
                 compAdapter.adapterUpdate(Component(nameValue,valueValue,true))
             }
         }
+
+
+
 
         with(builder){
             setPositiveButton("Add", DialogInterface.OnClickListener(function = addClick))

@@ -58,10 +58,11 @@ class CompanyListFragment : Fragment() {
     private lateinit var currentCTCField : TextInputLayout
     private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
     private lateinit var rv:RecyclerView
-    private lateinit var error_message:String
     private lateinit var companyNameValue: TextInputEditText
     private lateinit var currentCtcValue:TextInputEditText
     private lateinit var expectedCtcValue:TextInputEditText
+    private lateinit var errorMessage:String
+    private lateinit var error_message_textview:TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,21 +126,27 @@ class CompanyListFragment : Fragment() {
         companyNameValue = customAlertDialogView.findViewById<TextInputEditText>(R.id.company_name_edit_text_alert)
         currentCtcValue = customAlertDialogView.findViewById<TextInputEditText>(R.id.current_ctc_edit_text_alert)
         expectedCtcValue = customAlertDialogView.findViewById<TextInputEditText>(R.id.expected_ctc_edit_text_alert)
-        val error_message_textview = customAlertDialogView.findViewById<TextView>(R.id.error_message)
+        error_message_textview = customAlertDialogView.findViewById<TextView>(R.id.error_message)
         val inHandTextView = customAlertDialogView.findViewById<TextView>(R.id.calculate_in_hand_Text)
         val cancelTextView = customAlertDialogView.findViewById<TextView>(R.id.cancel)
         materialAlertDialogBuilder.setView(customAlertDialogView)
         val alertDialog = materialAlertDialogBuilder.create()
+
         inHandTextView.setOnClickListener {
             val company = companyNameField.editText?.text.toString()
             val expectedCtc = expectedCTCField.editText?.text.toString()
             val currentCtc = currentCTCField.editText?.text.toString()
             val regexCompany = regexCompany(company)
             if(!regexCompany){
-                error_message_textview.setTextColor(Color.parseColor("#ff0000"))
-                hikeViewModel.isCompanyNameProper = false
-                error_message_textview.text = "Error: contains only a-z, A-Z, 0-9"
-                error_message_textview.visibility = View.VISIBLE
+                showingMessage(errorMessage,"#ff0000")
+                return@setOnClickListener
+            }
+            if(!isCurrentNull(currentCtc)){
+                showingMessage(errorMessage,"#ff0000")
+                return@setOnClickListener
+            }
+            if(!isExpectedNull(expectedCtc)){
+                showingMessage(errorMessage,"#ff0000")
                 return@setOnClickListener
             }
             error_message_textview.text = ""
@@ -150,8 +157,36 @@ class CompanyListFragment : Fragment() {
             findNavController().navigate(R.id.action_companyListFragment_to_salaryComponentPreviewFragment,bundle,null)
             alertDialog.dismiss()
         }
+
+        cancelTextView.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
         alertDialog.show()
         companyNameField.requestFocus()
+    }
+
+    private fun showingMessage(errorMessage:String,color:String){
+        error_message_textview.setTextColor(Color.parseColor(color))
+        hikeViewModel.isCompanyNameProper = false
+        error_message_textview.text = errorMessage
+        error_message_textview.visibility = View.VISIBLE
+    }
+
+    private fun isCurrentNull(currentCtc: String): Boolean {
+        if(currentCtc.isEmpty()){
+            errorMessage = "Please Enter your current CTC"
+            return false
+        }
+        return true
+    }
+
+    private fun isExpectedNull(expectedCtc: String): Boolean {
+        if(expectedCtc.isEmpty()){
+            errorMessage = "Please Enter your expected CTC"
+            return false
+        }
+        return true
     }
 
     private fun regexCompany(company: String): Boolean {
@@ -160,6 +195,7 @@ class CompanyListFragment : Fragment() {
         if(company.length<20 && matched){
             return true
         }
+        errorMessage = "Error: contains only a-z, A-Z, 0-9"
         return false
     }
 

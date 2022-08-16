@@ -22,19 +22,7 @@ class MainViewModel(val hikeRepository: HikeRepository) : ViewModel(){
         return allHikes
     }
 
-//    fun savingData(hikeEntity:HikeEntity){
-//        GlobalScope.launch{
-//            with(Dispatchers.IO){
-//                    hikeRepository.addHike(hikeEntity)
-//            }
-//        }
-//    }
-
     fun savingData(hikeEntity:HikeEntity):Long{
           return hikeRepository.addHike(hikeEntity)
     }
-
-
-
-
 }
