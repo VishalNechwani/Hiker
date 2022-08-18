@@ -14,6 +14,9 @@
             android:id="@+id/action_companyListFragment_to_salaryComponentPreviewFragment"
             app:destination="@id/salaryComponentPreviewFragment"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_companyListFragment_to_showComponentListFragment"
+            app:destination="@id/showComponentListFragment" />
     </fragment>
     <fragment
         android:id="@+id/salaryComponentPreviewFragment"
@@ -24,4 +27,9 @@
             android:id="@+id/action_salaryComponentPreviewFragment_to_companyListFragment"
             app:destination="@id/companyListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/showComponentListFragment"
+        android:name="com.example.hiker.view.ShowComponentListFragment"
+        android:label="fragment_show_component_list"
+        tools:layout="@layout/fragment_show_component_list" />
 </navigation>

@@ -183,7 +183,7 @@ class CompanyListFragment : Fragment() {
 
     private fun isExpectedNull(expectedCtc: String): Boolean {
         if(expectedCtc.isEmpty()){
-            errorMessage = "Please Enter your expected CTC"
+            errorMessage = "Please Enter your Hike Amount"
             return false
         }
         return true

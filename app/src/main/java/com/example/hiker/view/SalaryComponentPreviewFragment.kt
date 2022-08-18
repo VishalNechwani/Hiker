@@ -12,6 +12,7 @@ import com.example.hiker.R
 import com.example.hiker.adapter.SalaryComponentAdapter
 import com.example.hiker.databinding.FragmentSalaryComponentPreviewBinding
 import android.content.DialogInterface
+import android.graphics.Color
 import android.os.AsyncTask
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
@@ -63,6 +64,8 @@ class SalaryComponentPreviewFragment : Fragment() {
     private var taxesOld : Int = 0
     private var salaryNew : Int = 0
     private var salaryOld : Int = 0
+    private lateinit var errorMessage:String
+    private lateinit var error_message_textview:TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -221,18 +224,20 @@ class SalaryComponentPreviewFragment : Fragment() {
         val name = dialogLayout.findViewById<EditText>(R.id.component_add_edit_text)
         var select_layout = dialogLayout.findViewById<AutoCompleteTextView>(R.id.filled_exposed_dropdown)
         val value = dialogLayout.findViewById<EditText>(R.id.component_value_edit_text)
-        val addComponentTxtView = dialogLayout.findViewById<EditText>(R.id.add_component_button)
-        val cancelTxtView = dialogLayout.findViewById<EditText>(R.id.cancel_button)
+        val addComponentTxtView = dialogLayout.findViewById<TextView>(R.id.add_component_button)
+        val cancelTxtView = dialogLayout.findViewById<TextView>(R.id.cancel_button)
+        val alertDialog = builder.create()
+        error_message_textview = customAlertDialogView.findViewById<TextView>(R.id.error_message)
+        error_message_textview.visibility = View.INVISIBLE
         //adding click to text views
-
-
-
 
         var arrAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
             context!!,android.R.layout.simple_spinner_item,
             resources.getStringArray(R.array.component))
         select_layout.setAdapter(arrAdapter)
-        builder.setView(dialogLayout)
+        val position = arrAdapter.getPosition("Part of salary like allowances...")
+        select_layout.setSelection(position)
+        builder.setView(dialogLayout).show()
 
         val addClick = { dialog: DialogInterface, which: Int ->
             val nameValue = name.toString()
@@ -243,15 +248,49 @@ class SalaryComponentPreviewFragment : Fragment() {
             }
         }
 
+        addComponentTxtView.setOnClickListener {
+            val comName = name.text.toString()
+            val comValue = value.text.toString()
+            if(comName.isEmpty()){
+                errorMessage = "Component Name cannot be null"
+                showingMessage(errorMessage,"#ff0000")
+                return@setOnClickListener
+            }
+            if(regexComponentName(comName)){
+                errorMessage = "Component Name cannot be null"
+                showingMessage(errorMessage,"#ff0000")
+                return@setOnClickListener
+            }
+            if(comValue.isEmpty()){
+                errorMessage = "Component value is empty please add some value"
+                showingMessage(errorMessage,"#ff0000")
+                return@setOnClickListener
+            }
+        }
 
-
-
-        with(builder){
-            setPositiveButton("Add", DialogInterface.OnClickListener(function = addClick))
-            setNegativeButton("Cancel", DialogInterface.OnClickListener(function = cancelClick))
-            show()
+        cancelTxtView.setOnClickListener {
+            alertDialog.dismiss()
         }
       }
+
+    private fun regexComponentName(value: String): Boolean {
+        val regex = Regex("[a-zA-Z\\s]+$")
+        val matched = regex.containsMatchIn(input = value)
+        if(value.length<20 && matched){
+            return true
+        }
+        errorMessage = "Error: contains only a-z, A-Z"
+        return false
+    }
+
+    private fun showingMessage(errorMessage:String,color:String){
+        error_message_textview.setTextColor(Color.parseColor(color))
+        hikeViewModel.isComponentAdd = false
+        error_message_textview.text = errorMessage
+        error_message_textview.visibility = View.VISIBLE
+    }
+
+
 
     inner class AsyncTaskForSave: AsyncTask<HikeEntity,Void,Long>() {
 

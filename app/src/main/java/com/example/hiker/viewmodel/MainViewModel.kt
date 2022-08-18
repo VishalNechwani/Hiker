@@ -13,6 +13,7 @@ class MainViewModel(val hikeRepository: HikeRepository) : ViewModel(){
 
     private var allHikes : LiveData<List<HikeEntity>>
     var isCompanyNameProper = false
+    var isComponentAdd = false
 
     init {
         allHikes = hikeRepository.getAllHikes()

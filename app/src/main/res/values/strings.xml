@@ -27,8 +27,8 @@
     <string name="cancel">Cancel</string>
     <string name="rupee">₹</string>
     <string-array name="component">
-        <item name="part">Part of salary like allowances etc</item>
-        <item name="not_part">Not part of Salary like Shares,Funds etc</item>
+        <item name="part">Part of salary like allowances...</item>
+        <item name="not_part">Not part of Salary like Shares,Funds...</item>
     </string-array>
     <string name="regime">Regime</string>
     <string name="new_regime">New Regime</string>

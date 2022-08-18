@@ -1,10 +1,14 @@
 package com.example.hiker.adapter
 
 import android.graphics.Color
+import android.os.Bundle
 import android.view.*
 import android.widget.ListView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.navigation.Navigation
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hiker.R
 import com.example.hiker.model.HikeEntity
@@ -26,6 +30,10 @@ class CompanyListAdapter(val hikeList:List<HikeEntity>) : RecyclerView.Adapter<C
         holder.inHandSalary.text = hikeList.get(position).inHandNew
 //        holder.componentList.adapter = CompanyListSubComponentAdapter(hikeList.get(position).component_arr)
         holder.card.isLongClickable = true
+        holder.card.setOnClickListener {
+            findNavController(holder.itemView).navigate(R.id.action_companyListFragment_to_showComponentListFragment,null,null)
+            true
+        }
     }
 
     private fun clickItem(holder: CompanyListAdapter.ViewHolder) {
