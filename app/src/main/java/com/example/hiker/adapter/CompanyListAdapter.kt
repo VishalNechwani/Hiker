@@ -11,10 +11,11 @@ import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hiker.R
+import com.example.hiker.databinding.FragmentCompanyListBinding
 import com.example.hiker.model.HikeEntity
 
 
-class CompanyListAdapter(val hikeList:List<HikeEntity>) : RecyclerView.Adapter<CompanyListAdapter.ViewHolder>()  {
+class CompanyListAdapter(val hikeList:List<HikeEntity>,val companyListBinding: FragmentCompanyListBinding) : RecyclerView.Adapter<CompanyListAdapter.ViewHolder>()  {
 
 
     var isEnable = false
@@ -33,7 +34,8 @@ class CompanyListAdapter(val hikeList:List<HikeEntity>) : RecyclerView.Adapter<C
         holder.card.setOnLongClickListener {
             if (!isEnable)
             {
-             it.startActionMode(ActionModeCallback(holder))
+                companyListBinding.menuDelete.visibility = View.VISIBLE
+                isEnable = false
             }
             return@setOnLongClickListener true
         }
@@ -42,8 +44,6 @@ class CompanyListAdapter(val hikeList:List<HikeEntity>) : RecyclerView.Adapter<C
                 clickItem(holder)
             }
         }
-
-
     }
 
 

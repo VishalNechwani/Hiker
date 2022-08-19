@@ -13,6 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.DataBindingUtil.setContentView
@@ -63,6 +65,7 @@ class CompanyListFragment : Fragment() {
     private lateinit var expectedCtcValue:TextInputEditText
     private lateinit var errorMessage:String
     private lateinit var error_message_textview:TextView
+    private lateinit var deleteImg:ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,10 +90,10 @@ class CompanyListFragment : Fragment() {
 
     private fun initView() {
         rv = companyListBinding.recyclerView
-        val hikeNoListLayout = companyListBinding.noHikeListLayout
+        deleteImg = companyListBinding.menuDelete
+        deleteImg.visibility = View.INVISIBLE
         val addButton =  companyListBinding.addButton
         val txtView = companyListBinding.noHikesTxt
-        hikeNoListLayout.visibility = View.VISIBLE
         materialAlertDialogBuilder = MaterialAlertDialogBuilder(context!!)
 
         rv.layoutManager = LinearLayoutManager(context)
@@ -98,7 +101,7 @@ class CompanyListFragment : Fragment() {
             if (it.isNotEmpty()){
                 txtView.visibility = View.GONE
                 rv.visibility = View.VISIBLE
-                val customAdapter = CompanyListAdapter(it)
+                val customAdapter = CompanyListAdapter(it,companyListBinding)
                 rv.adapter = customAdapter
             }else{
                 rv.visibility = View.GONE
