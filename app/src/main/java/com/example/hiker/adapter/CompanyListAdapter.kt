@@ -30,16 +30,23 @@ class CompanyListAdapter(val hikeList:List<HikeEntity>) : RecyclerView.Adapter<C
         holder.inHandSalary.text = hikeList.get(position).inHandNew
 //        holder.componentList.adapter = CompanyListSubComponentAdapter(hikeList.get(position).component_arr)
         holder.card.isLongClickable = true
-        holder.card.setOnClickListener {
-            findNavController(holder.itemView).navigate(R.id.action_companyListFragment_to_showComponentListFragment,null,null)
-            true
+        holder.card.setOnLongClickListener {
+            if (!isEnable)
+            {
+             it.startActionMode(ActionModeCallback(holder))
+            }
+            return@setOnLongClickListener true
         }
+        holder.card.setOnClickListener {
+            if (isEnable){
+                clickItem(holder)
+            }
+        }
+
+
     }
 
-    private fun clickItem(holder: CompanyListAdapter.ViewHolder) {
-        val adapter = holder.adapterPosition
-        holder.card.setBackgroundColor(Color.GRAY)
-    }
+
 
 
 
@@ -53,6 +60,35 @@ class CompanyListAdapter(val hikeList:List<HikeEntity>) : RecyclerView.Adapter<C
         val companyName: TextView = itemView.findViewById(R.id.company_name)
         val inHandSalary: TextView = itemView.findViewById(R.id.in_hand_salary)
 //        val componentList:RecyclerView = itemView.findViewById(R.id.component_list)
+
+    }
+
+    private fun clickItem(holder: CompanyListAdapter.ViewHolder) {
+//        val adapter = holder.adapterPosition
+        holder.card.setBackgroundColor(Color.GRAY)
+    }
+
+    inner class ActionModeCallback(val holder: ViewHolder) : ActionMode.Callback{
+        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            val inflater = mode?.menuInflater
+            inflater?.inflate(R.menu.delete_menu, menu)
+            return true
+        }
+
+        override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+        isEnable = false
+        clickItem(holder)
+        return true
+        }
+
+        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+            return true
+        }
+
+        override fun onDestroyActionMode(mode: ActionMode?) {
+
+        }
+
 
     }
 }

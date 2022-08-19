@@ -8,9 +8,5 @@
         android:icon="@drawable/ic_delete"
         app:showAsAction="always"
         />
-    <item
-        android:id="@+id/menu_select_all"
-        android:title="Select all"
-        android:icon="@drawable/ic_select_all"
-        app:showAsAction="always"/>
+
 </menu>
