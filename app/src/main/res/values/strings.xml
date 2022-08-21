@@ -38,5 +38,7 @@
     <string name="calculate_in_hand_only_alert">CALCULATE INHAND</string>
     <string name="cancel_alert">CANCEL</string>
     <string name="add_alert">ADD</string>
-
+    <string name="delete_hiker">Do you want to really delete this hiker ?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
 </resources>

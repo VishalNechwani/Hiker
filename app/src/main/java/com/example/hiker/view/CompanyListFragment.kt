@@ -1,26 +1,16 @@
 package com.example.hiker.view
 
-import android.app.AlertDialog
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextUtils.isEmpty
-import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.DataBindingUtil.setContentView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +18,6 @@ import com.example.hiker.HikerApplication
 import com.example.hiker.R
 import com.example.hiker.adapter.CompanyListAdapter
 import com.example.hiker.databinding.FragmentCompanyListBinding
-import com.example.hiker.model.HikeEntity
 import com.example.hiker.viewmodel.MainViewModel
 import com.example.hiker.viewmodel.MainViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -95,13 +84,12 @@ class CompanyListFragment : Fragment() {
         val addButton =  companyListBinding.addButton
         val txtView = companyListBinding.noHikesTxt
         materialAlertDialogBuilder = MaterialAlertDialogBuilder(context!!)
-
         rv.layoutManager = LinearLayoutManager(context)
         hikeViewModel.getHikes().observe(this, Observer {
             if (it.isNotEmpty()){
                 txtView.visibility = View.GONE
                 rv.visibility = View.VISIBLE
-                val customAdapter = CompanyListAdapter(it,companyListBinding)
+                val customAdapter = CompanyListAdapter(it,companyListBinding,context!!,hikeViewModel)
                 rv.adapter = customAdapter
             }else{
                 rv.visibility = View.GONE

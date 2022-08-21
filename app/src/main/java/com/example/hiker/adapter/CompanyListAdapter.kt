@@ -1,30 +1,53 @@
 package com.example.hiker.adapter
 
+import android.content.Context
 import android.graphics.Color
-import android.os.Bundle
 import android.view.*
-import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.cardview.widget.CardView
-import androidx.navigation.Navigation
-import androidx.navigation.Navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hiker.R
 import com.example.hiker.databinding.FragmentCompanyListBinding
 import com.example.hiker.model.HikeEntity
+import com.example.hiker.viewmodel.MainViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
-class CompanyListAdapter(val hikeList:List<HikeEntity>,val companyListBinding: FragmentCompanyListBinding) : RecyclerView.Adapter<CompanyListAdapter.ViewHolder>()  {
+class CompanyListAdapter(val hikeList:List<HikeEntity>,val companyListBinding: FragmentCompanyListBinding,val context:Context,val viewModel: MainViewModel) : RecyclerView.Adapter<CompanyListAdapter.ViewHolder>()  {
 
 
     var isEnable = false
+    var positionHikeArr : ArrayList<Int> =  ArrayList()
+    var isSamePosition : ArrayList<Int> =  ArrayList()
+    private lateinit var materialAlertDialogBuilder: MaterialAlertDialogBuilder
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.cardviewlist, parent, false)
+
+        materialAlertDialogBuilder = MaterialAlertDialogBuilder(context)
+
+        val alert = materialAlertDialogBuilder.create()
+        companyListBinding.menuDelete.setOnClickListener {
+            materialAlertDialogBuilder.setMessage("Do you really want to delete this hiker ?")
+            materialAlertDialogBuilder.setPositiveButton(android.R.string.yes){ dialog, which ->
+               deleteHiker()
+            }
+            materialAlertDialogBuilder.setNegativeButton(android.R.string.no) { dialog, which ->
+                alert.dismiss()
+             }
+            materialAlertDialogBuilder.show()
+        }
        return ViewHolder(view)
   }
+
+    private fun deleteHiker() {
+        for (position in positionHikeArr){
+            (hikeList as ArrayList).remove(hikeList[position])
+        }
+        notifyDataSetChanged()
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.companyName.text = hikeList.get(position).company_name
@@ -34,17 +57,28 @@ class CompanyListAdapter(val hikeList:List<HikeEntity>,val companyListBinding: F
         holder.card.setOnLongClickListener {
             if (!isEnable)
             {
+                clickItemShadowing(holder)
                 companyListBinding.menuDelete.visibility = View.VISIBLE
-                isEnable = false
+                isEnable = true
+                positionHikeArr.add(holder.adapterPosition)
             }
             return@setOnLongClickListener true
         }
         holder.card.setOnClickListener {
             if (isEnable){
-                clickItem(holder)
+                if(!positionHikeArr.contains(holder.adapterPosition)){
+                    positionHikeArr.add(holder.adapterPosition)
+                    clickItemShadowing(holder)
+                }
+                else{
+                    isEnable = false
+                    positionHikeArr.remove(holder.adapterPosition)
+                    clickItemUnShadowing(holder)
+                }
             }
         }
     }
+
 
 
 
@@ -63,33 +97,15 @@ class CompanyListAdapter(val hikeList:List<HikeEntity>,val companyListBinding: F
 
     }
 
-    private fun clickItem(holder: CompanyListAdapter.ViewHolder) {
+    private fun clickItemShadowing(holder: CompanyListAdapter.ViewHolder) {
 //        val adapter = holder.adapterPosition
         holder.card.setBackgroundColor(Color.GRAY)
     }
 
-    inner class ActionModeCallback(val holder: ViewHolder) : ActionMode.Callback{
-        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-            val inflater = mode?.menuInflater
-            inflater?.inflate(R.menu.delete_menu, menu)
-            return true
-        }
-
-        override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-        isEnable = false
-        clickItem(holder)
-        return true
-        }
-
-        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
-            return true
-        }
-
-        override fun onDestroyActionMode(mode: ActionMode?) {
-
-        }
-
-
+    private fun clickItemUnShadowing(holder: CompanyListAdapter.ViewHolder) {
+//        val adapter = holder.adapterPosition
+        holder.card.setBackgroundColor(Color.WHITE)
     }
+
 }
 
