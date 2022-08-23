@@ -14,7 +14,7 @@ import com.example.hiker.viewmodel.MainViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
-class CompanyListAdapter(val hikeList:List<HikeEntity>,val companyListBinding: FragmentCompanyListBinding,val context:Context,val viewModel: MainViewModel) : RecyclerView.Adapter<CompanyListAdapter.ViewHolder>()  {
+class CompanyListAdapter(val hikeList:HashMap<Int,HikeEntity>,val companyListBinding: FragmentCompanyListBinding,val context:Context,val viewModel: MainViewModel) : RecyclerView.Adapter<CompanyListAdapter.ViewHolder>()  {
 
 
     var isEnable = false
@@ -44,14 +44,14 @@ class CompanyListAdapter(val hikeList:List<HikeEntity>,val companyListBinding: F
 
     private fun deleteHiker() {
         for (position in positionHikeArr){
-            (hikeList as ArrayList).remove(hikeList[position])
+            hikeList.remove(position)
         }
         notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.companyName.text = hikeList.get(position).company_name
-        holder.inHandSalary.text = hikeList.get(position).inHandNew
+        holder.companyName.text = hikeList.get(position)?.company_name
+        holder.inHandSalary.text = hikeList.get(position)?.inHandNew
 //        holder.componentList.adapter = CompanyListSubComponentAdapter(hikeList.get(position).component_arr)
         holder.card.isLongClickable = true
         holder.card.setOnLongClickListener {
@@ -71,7 +71,9 @@ class CompanyListAdapter(val hikeList:List<HikeEntity>,val companyListBinding: F
                     clickItemShadowing(holder)
                 }
                 else{
-                    isEnable = false
+                    if(positionHikeArr.size == 1){
+                        isEnable = false
+                    }
                     positionHikeArr.remove(holder.adapterPosition)
                     clickItemUnShadowing(holder)
                 }

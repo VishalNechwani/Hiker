@@ -18,6 +18,7 @@ import com.example.hiker.HikerApplication
 import com.example.hiker.R
 import com.example.hiker.adapter.CompanyListAdapter
 import com.example.hiker.databinding.FragmentCompanyListBinding
+import com.example.hiker.model.HikeEntity
 import com.example.hiker.viewmodel.MainViewModel
 import com.example.hiker.viewmodel.MainViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -55,6 +56,9 @@ class CompanyListFragment : Fragment() {
     private lateinit var errorMessage:String
     private lateinit var error_message_textview:TextView
     private lateinit var deleteImg:ImageView
+    private lateinit var hikerMap:HashMap<Int,HikeEntity>
+    private var counter = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +93,10 @@ class CompanyListFragment : Fragment() {
             if (it.isNotEmpty()){
                 txtView.visibility = View.GONE
                 rv.visibility = View.VISIBLE
-                val customAdapter = CompanyListAdapter(it,companyListBinding,context!!,hikeViewModel)
+                for(item in it){
+                    hikerMap.put(counter++,item)
+                }
+                val customAdapter = CompanyListAdapter(hikerMap,companyListBinding,context!!,hikeViewModel)
                 rv.adapter = customAdapter
             }else{
                 rv.visibility = View.GONE
