@@ -233,7 +233,6 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
         materialDeleteAlert.setMessage("Do you really want to delete this hiker ?")
         materialDeleteAlert.setPositiveButton(android.R.string.yes){ dialog, which ->
             companyListAdapter.deleteHikerInAdapter()
-            hikeViewModel.deleteHiker()
         }
         materialDeleteAlert.setNegativeButton(android.R.string.no) { dialog, which ->
             alert.dismiss()
@@ -249,9 +248,10 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
         companyListBinding.menuDelete.visibility = View.GONE
     }
 
-    override fun deleteHiker() {
-
+    override fun deleteHiker(deleteHikes: ArrayList<HikeEntity>) {
+        hikeViewModel.deleteHiker(deleteHikes)
     }
+
 
 }
 

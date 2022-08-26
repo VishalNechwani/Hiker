@@ -28,11 +28,11 @@ class MainViewModel(val hikeRepository: HikeRepository) : ViewModel(){
           return hikeRepository.addHike(hikeEntity)
     }
 
-    fun deleteHiker(){
+    fun deleteHiker(deleteHikes: ArrayList<HikeEntity>){
      //database operation to delete
         GlobalScope.launch {
             withContext(Dispatchers.IO){
-                hikeRepository.deleteHikes()
+                hikeRepository.deleteHikes(deleteHikes)
             }
         }
 

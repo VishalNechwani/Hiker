@@ -95,14 +95,14 @@ class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCall
 
     fun deleteHikerInAdapter() {
         //deleting the hiker
-        var hikeEntityForDelete: List<HikeEntity> = emptyList()
+        var hikeEntityForDelete: ArrayList<HikeEntity>? = null
         var count = 0
         for(eachHikePosition in positionHikeArr){
-            hikeEntityForDelete[count++]
+            hikeEntityForDelete!!.add(hikeMap.get(eachHikePosition)!!)
             hikeMap.remove(eachHikePosition)
         }
         notifyDataSetChanged()
-        companyListCallBack.deleteHiker()
+        companyListCallBack.deleteHiker(hikeEntityForDelete!!)
     }
 
 }
