@@ -7,6 +7,7 @@ import com.example.hiker.model.HikeRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MainViewModel(val hikeRepository: HikeRepository) : ViewModel(){
@@ -25,5 +26,15 @@ class MainViewModel(val hikeRepository: HikeRepository) : ViewModel(){
 
     fun savingData(hikeEntity:HikeEntity):Long{
           return hikeRepository.addHike(hikeEntity)
+    }
+
+    fun deleteHiker(){
+     //database operation to delete
+        GlobalScope.launch {
+            withContext(Dispatchers.IO){
+                hikeRepository.deleteHikes()
+            }
+        }
+
     }
 }

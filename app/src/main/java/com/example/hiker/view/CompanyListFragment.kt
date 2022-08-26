@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hiker.HikerApplication
 import com.example.hiker.R
 import com.example.hiker.adapter.CompanyListAdapter
+import com.example.hiker.adapter.CompanyListCallBack
 import com.example.hiker.databinding.FragmentCompanyListBinding
 import com.example.hiker.model.HikeEntity
 import com.example.hiker.viewmodel.MainViewModel
@@ -40,7 +41,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [CompanyListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CompanyListFragment : Fragment() {
+class CompanyListFragment : Fragment(),CompanyListCallBack {
 
     private lateinit var companyListBinding : FragmentCompanyListBinding
     private lateinit var hikeViewModel : MainViewModel
@@ -57,7 +58,10 @@ class CompanyListFragment : Fragment() {
     private lateinit var error_message_textview:TextView
     private lateinit var deleteImg:ImageView
     private lateinit var hikerMap:HashMap<Int,HikeEntity>
+    private lateinit var materialDeleteAlert: MaterialAlertDialogBuilder
+    private lateinit var companyListAdapter : CompanyListAdapter
     private var counter = 0
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,6 +76,9 @@ class CompanyListFragment : Fragment() {
         companyListBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_company_list, container, false);
         hikeViewModel = ViewModelProvider(this,MainViewModelFactory(HikerApplication.getRepositoryInstance()!!))[MainViewModel::class.java]
+        hikerMap = HashMap()
+        materialDeleteAlert = MaterialAlertDialogBuilder(context!!)
+        materialAlertDialogBuilder = MaterialAlertDialogBuilder(context!!)
         return companyListBinding.root
     }
 
@@ -87,8 +94,10 @@ class CompanyListFragment : Fragment() {
         deleteImg.visibility = View.INVISIBLE
         val addButton =  companyListBinding.addButton
         val txtView = companyListBinding.noHikesTxt
-        materialAlertDialogBuilder = MaterialAlertDialogBuilder(context!!)
         rv.layoutManager = LinearLayoutManager(context)
+        companyListBinding.menuDelete.setOnClickListener {
+            showDeleteAlert()
+        }
         hikeViewModel.getHikes().observe(this, Observer {
             if (it.isNotEmpty()){
                 txtView.visibility = View.GONE
@@ -96,8 +105,8 @@ class CompanyListFragment : Fragment() {
                 for(item in it){
                     hikerMap.put(counter++,item)
                 }
-                val customAdapter = CompanyListAdapter(hikerMap,companyListBinding,context!!,hikeViewModel)
-                rv.adapter = customAdapter
+                companyListAdapter = CompanyListAdapter(hikerMap,this)
+                rv.adapter = companyListAdapter
             }else{
                 rv.visibility = View.GONE
                 txtView.visibility = View.VISIBLE
@@ -218,4 +227,31 @@ class CompanyListFragment : Fragment() {
                 }
             }
     }
+
+    private fun showDeleteAlert() {
+        val alert = materialDeleteAlert.create()
+        materialDeleteAlert.setMessage("Do you really want to delete this hiker ?")
+        materialDeleteAlert.setPositiveButton(android.R.string.yes){ dialog, which ->
+            companyListAdapter.deleteHikerInAdapter()
+            hikeViewModel.deleteHiker()
+        }
+        materialDeleteAlert.setNegativeButton(android.R.string.no) { dialog, which ->
+            alert.dismiss()
+        }
+        materialDeleteAlert.show()
+    }
+
+    override fun showDeleteIcon() {
+        companyListBinding.menuDelete.visibility = View.VISIBLE
+    }
+
+    override fun HideDeleteIcon() {
+        companyListBinding.menuDelete.visibility = View.GONE
+    }
+
+    override fun deleteHiker() {
+
+    }
+
 }
+

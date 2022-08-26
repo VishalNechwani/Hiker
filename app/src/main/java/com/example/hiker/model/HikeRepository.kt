@@ -15,5 +15,10 @@ class HikeRepository(val dao: HikeDao) {
         return dao.addHike(hike)
     }
 
+    //delete hike entity from room
+    suspend fun deleteHikes(hike: HikeEntity) : Long {
+        return dao.addHike(hike)
+    }
+
 
 }
