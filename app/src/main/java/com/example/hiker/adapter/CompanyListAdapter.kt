@@ -66,6 +66,8 @@ class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCall
                     positionHikeArr.remove(holder.adapterPosition)
                     clickItemUnShadowing(holder)
                 }
+            }else{
+                companyListCallBack.navigateToCompanyShowComponent(holder.adapterPosition,hikeMap.get(holder.adapterPosition))
             }
         }
     }

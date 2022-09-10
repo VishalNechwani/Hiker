@@ -1,5 +1,7 @@
 package com.example.hiker.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.room.*
 import com.example.hiker.utils.Component
 
@@ -16,5 +18,48 @@ data class HikeEntity(
     @ColumnInfo(name = "in_hand_old") var inHandOld: String,
     @ColumnInfo(name = "regime_old") var inRegimeOld: String,
     @ColumnInfo(name = "regime_new") var inRegimeNew: String
-    )
+    ): Parcelable{
+    constructor(parcel: Parcel) : this(
+        parcel.readInt(),
+        parcel.readString()!!,
+        parcel.createTypedArrayList(Component.CREATOR)?:ArrayList(),
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!
+    ) {
+
+
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(company_id)
+        parcel.writeString(company_name)
+        parcel.writeTypedList(component_arr)
+        parcel.writeString(current_ctc)
+        parcel.writeString(expected_ctc)
+        parcel.writeString(inHandNew)
+        parcel.writeString(inHandOld)
+        parcel.writeString(inRegimeOld)
+        parcel.writeString(inRegimeNew)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<HikeEntity> {
+        override fun createFromParcel(parcel: Parcel): HikeEntity {
+            return HikeEntity(parcel)
+        }
+
+        override fun newArray(size: Int): Array<HikeEntity?> {
+            return arrayOfNulls(size)
+        }
+    }
+
+
+}
  

@@ -249,9 +249,18 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
     }
 
     override fun deleteHiker(deleteHikes: ArrayList<HikeEntity>) {
-        hikeViewModel.deleteHiker(deleteHikes)
+//        hikeViewModel.deleteHiker(deleteHikes)
     }
 
+    override fun navigateToCompanyShowComponent(holderPosition: Int, hikeEntity: HikeEntity?) {
+        val bundle = Bundle()
+        bundle.putParcelable("hikeEntity",hikeEntity)
+        findNavController().navigate(R.id.action_companyListFragment_to_showComponentListFragment,bundle)
+    }
+
+//    override fun navigateToCompanyShowComponent(holderPosition : Int,hikeEntity:HikeEntity?) {
+//        findNavController().navigate(R.id.action_companyListFragment_to_showComponentListFragment)
+//    }
 
 }
 

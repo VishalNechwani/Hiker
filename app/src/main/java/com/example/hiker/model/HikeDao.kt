@@ -1,10 +1,7 @@
 package com.example.hiker.model
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface HikeDao {
@@ -15,6 +12,7 @@ interface HikeDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun addHike(hike: HikeEntity):Long
 
-    @Query("delete from hiker
-    fun deleteHike(deleteHike: List<HikeEntity>)
+//    @TypeConverters(RoomConverters::class)
+//    @Query("delete from hiker where company_id in (:deleteHike)")
+//    fun deleteHike(deleteHike: List<HikeEntity>)
 }
