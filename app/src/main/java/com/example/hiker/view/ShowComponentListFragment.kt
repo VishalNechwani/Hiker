@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hiker.R
 import com.example.hiker.adapter.ComponentListAdapter
@@ -50,9 +51,8 @@ class ShowComponentListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         componentRecyclerView = showComponentBinding.componentRecyclerView
-        componentRecyclerView.adapter = ComponentListAdapter(param1?.component_arr)
-
-
+        componentRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        componentRecyclerView.adapter = ComponentListAdapter(param1?.component_arr!!)
     }
 
     companion object {
