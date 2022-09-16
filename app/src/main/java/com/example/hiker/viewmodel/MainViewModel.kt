@@ -35,6 +35,6 @@ class MainViewModel(val hikeRepository: HikeRepository) : ViewModel(){
                 hikeRepository.deleteHikes(deleteHikes)
             }
         }
-
     }
+
 }

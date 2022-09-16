@@ -5,14 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hiker.HikerApplication
 import com.example.hiker.R
 import com.example.hiker.adapter.ComponentListAdapter
 import com.example.hiker.databinding.FragmentCompanyListBinding
 import com.example.hiker.databinding.FragmentShowComponentListBinding
 import com.example.hiker.model.HikeEntity
+import com.example.hiker.viewmodel.MainViewModel
+import com.example.hiker.viewmodel.MainViewModelFactory
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -29,6 +34,8 @@ class ShowComponentListFragment : Fragment() {
     private var param1: HikeEntity? = null
     private lateinit var showComponentBinding : FragmentShowComponentListBinding
     private lateinit var componentRecyclerView: RecyclerView
+    private lateinit var backButtonImageView: ImageView
+    private lateinit var hikeViewModel : MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,14 +52,23 @@ class ShowComponentListFragment : Fragment() {
         showComponentBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_show_component_list, container, false);
 
+        hikeViewModel = ViewModelProvider(this,
+            MainViewModelFactory(HikerApplication.getRepositoryInstance()!!)
+        )[MainViewModel::class.java]
+
+
         return showComponentBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         componentRecyclerView = showComponentBinding.componentRecyclerView
+        backButtonImageView = showComponentBinding.imageViewBack
         componentRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         componentRecyclerView.adapter = ComponentListAdapter(param1?.component_arr!!)
+        backButtonImageView.setOnClickListener {
+         parentFragmentManager.popBackStack()
+        }
     }
 
     companion object {

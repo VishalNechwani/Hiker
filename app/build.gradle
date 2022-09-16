@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.hiker"
-        minSdk 21
+        minSdk 24
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -65,6 +65,7 @@ dependencies {
     implementation "com.google.code.gson:gson:$gson"
     testImplementation "junit:junit:$junit"
     implementation "androidx.room:room-ktx:$room_db_version"
+    implementation 'com.ibm.icu:icu4j:61.1'
     kapt "androidx.room:room-compiler:$room_db_version"
     androidTestImplementation "androidx.test.ext:junit:$ext_junit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$expresso"

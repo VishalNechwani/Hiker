@@ -1,13 +1,21 @@
 package com.example.hiker.adapter
 
 import android.graphics.Color
+import android.icu.text.NumberFormat
+import android.os.Build
 import android.view.*
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hiker.R
 import com.example.hiker.model.HikeEntity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import java.math.BigDecimal
+import java.math.BigInteger
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCallBack: CompanyListCallBack) : RecyclerView.Adapter<CompanyListAdapter.ViewHolder>()  {
@@ -38,7 +46,7 @@ class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCall
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.companyName.text = hikeMap.get(position)?.company_name
-        holder.inHandSalary.text = hikeMap.get(position)?.inHandNew
+        holder.inHandSalary.text = currencyFormat(hikeMap.get(position)?.inHandNew!!)
 //        holder.componentList.adapter = CompanyListSubComponentAdapter(hikeMap.get(position).component_arr)
         holder.card.isLongClickable = true
         holder.card.setOnLongClickListener {
@@ -105,6 +113,11 @@ class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCall
         }
         notifyDataSetChanged()
         companyListCallBack.deleteHiker(hikeEntityForDelete!!)
+    }
+
+    fun currencyFormat(value:String):String{
+        val format = NumberFormat.getCurrencyInstance(Locale("en","in"))
+        return format.format(BigInteger(value))
     }
 
 }
