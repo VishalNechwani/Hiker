@@ -37,4 +37,39 @@ class MainViewModel(val hikeRepository: HikeRepository) : ViewModel(){
         }
     }
 
+    fun currencyConversion(amount:String):String{
+       val amountLength =  amount.length
+       val amountValue = amount.toInt()
+       var formattedAmount = ""
+       when(amountLength){
+           1,2,3 -> {
+
+           }
+           4->{
+               formattedAmount = (amountValue/100).toString()
+               formattedAmount = formattedAmount.substring(0,4)
+               formattedAmount + "HD"
+           }
+           5->{
+               formattedAmount = (amountValue/1000).toString()
+               formattedAmount = formattedAmount.substring(0,4)
+               formattedAmount + "TH"
+           }
+           6->{
+
+           }
+           7->{
+
+           }
+           8->{
+
+           }
+           9->{
+
+           }
+       }
+    return formattedAmount
+    }
+
+
 }

@@ -41,4 +41,6 @@
     <string name="delete_hiker">Do you want to really delete this hiker ?</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
+    <string name="image_back_button">imagebackbutton</string>
+    <string name="image_background">imagebackground</string>
 </resources>

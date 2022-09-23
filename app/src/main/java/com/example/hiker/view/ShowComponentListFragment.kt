@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +37,10 @@ class ShowComponentListFragment : Fragment() {
     private lateinit var componentRecyclerView: RecyclerView
     private lateinit var backButtonImageView: ImageView
     private lateinit var hikeViewModel : MainViewModel
+    private lateinit var salaryOld : TextView
+    private lateinit var salaryNew : TextView
+    private lateinit var taxOld : TextView
+    private lateinit var taxNew : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +69,14 @@ class ShowComponentListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         componentRecyclerView = showComponentBinding.componentRecyclerView
         backButtonImageView = showComponentBinding.imageViewBack
+        salaryNew = showComponentBinding.salary
+        salaryOld = showComponentBinding.salaryOld
+        taxNew = showComponentBinding.tax
+        taxOld = showComponentBinding.taxOld
+        hikeViewModel.currencyConversion(param1!!.inHandNew)
+
+
+
         componentRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         componentRecyclerView.adapter = ComponentListAdapter(param1?.component_arr!!)
         backButtonImageView.setOnClickListener {
