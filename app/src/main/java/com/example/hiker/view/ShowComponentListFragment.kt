@@ -41,6 +41,11 @@ class ShowComponentListFragment : Fragment() {
     private lateinit var salaryNew : TextView
     private lateinit var taxOld : TextView
     private lateinit var taxNew : TextView
+    //    all monthly symbols
+    private lateinit var salaryOldSymbol : TextView
+    private lateinit var salaryNewSymbol : TextView
+    private lateinit var taxOldSymbol : TextView
+    private lateinit var taxNewSymbol : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,14 +74,24 @@ class ShowComponentListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         componentRecyclerView = showComponentBinding.componentRecyclerView
         backButtonImageView = showComponentBinding.imageViewBack
-        salaryNew = showComponentBinding.salary
-        salaryOld = showComponentBinding.salaryOld
+        salaryNew = showComponentBinding.montlyIncome
+        salaryOld = showComponentBinding.montlyIncomeOld
         taxNew = showComponentBinding.tax
         taxOld = showComponentBinding.taxOld
-        hikeViewModel.currencyConversion(param1!!.inHandNew)
-
-
-
+        //       symbol
+        salaryNewSymbol = showComponentBinding.montlyIncomeSymbol
+        salaryOldSymbol = showComponentBinding.montlyIncomeSymbolOld
+        taxNewSymbol = showComponentBinding.taxValueSymbol
+        taxOldSymbol = showComponentBinding.taxValueSymbolOld
+        //        setting text views
+        salaryOld.text = hikeViewModel.currencyConversion(param1!!.inHandOld)
+        salaryOldSymbol.text = hikeViewModel.symbol
+        salaryNew.text = hikeViewModel.currencyConversion(param1!!.inHandNew)
+        salaryNewSymbol.text = hikeViewModel.symbol
+        taxOld.text = hikeViewModel.currencyConversion(param1!!.inRegimeOld)
+        taxOldSymbol.text = hikeViewModel.symbol
+        taxNew.text = hikeViewModel.currencyConversion(param1!!.inRegimeNew)
+        taxNewSymbol.text = hikeViewModel.symbol
         componentRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         componentRecyclerView.adapter = ComponentListAdapter(param1?.component_arr!!)
         backButtonImageView.setOnClickListener {
