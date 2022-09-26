@@ -58,7 +58,7 @@
                 android:paddingLeft="10dp"
                 android:text="@string/new_regime"
                 android:textColor="@color/white"
-                android:background="@color/button_gray"
+                android:background="#b7d8c8"
                 android:textSize="12sp"
                 />
 
@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingTop="25dp"
-                android:paddingLeft="20dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="30dp"
                 android:paddingBottom="20dp"
                 >
@@ -80,6 +80,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+
                     />
 
                 <TextView
@@ -87,8 +88,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="22sp"
-                    android:layout_marginEnd="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="k"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintStart_toEndOf="@+id/montly_income"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -129,8 +131,9 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tax_value_symbol"
                     android:textSize="22sp"
-                    android:layout_marginEnd="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="k"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintStart_toEndOf="@+id/tax"
                     app:layout_constraintTop_toTopOf="@+id/tax"
                     />
 
@@ -164,7 +167,7 @@
                 android:paddingLeft="10dp"
                 android:text="@string/old_regime"
                 android:textColor="@color/white"
-                android:background="@color/button_gray"
+                android:background="#b7d8c8"
                 android:textSize="12sp"
                 />
 
@@ -172,7 +175,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingTop="25dp"
-                android:paddingLeft="20dp"
+                android:paddingLeft="30dp"
                 android:paddingRight="30dp"
                 android:paddingBottom="20dp"
                 >
@@ -192,8 +195,9 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/montly_income_symbol_old"
                     android:textSize="22sp"
-                    android:layout_marginEnd="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="k"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintStart_toEndOf="@+id/montly_income_old"
                     app:layout_constraintTop_toTopOf="parent"
                     />
 
@@ -235,8 +239,9 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/tax_value_symbol_old"
                     android:textSize="22sp"
-                    android:layout_marginEnd="5dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="k"
+                    android:layout_marginStart="5dp"
+                    app:layout_constraintStart_toEndOf="@+id/tax_old"
                     app:layout_constraintTop_toTopOf="@+id/tax_old"
                     />
 

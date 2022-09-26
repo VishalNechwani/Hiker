@@ -41,55 +41,43 @@ class MainViewModel(val hikeRepository: HikeRepository) : ViewModel(){
        val amountLength =  amount.length
        val amountValue = amount.toDouble()
        var formattedAmount = ""
-       when(amountLength){
+        formattedAmount = (amountValue/1000).toString()
+        when(amountLength){
            1 -> {
-               formattedAmount = (amountValue/1).toString()
-               formattedAmount = formattedAmount.substring(0,1)
-               symbol = "rs"
+               //1 = 0.001
+               formattedAmount = formattedAmount.substring(0,5)
            }
            2 -> {
-               formattedAmount = (amountValue/1).toString()
-               formattedAmount = formattedAmount.substring(0,2)
-               symbol = "rs"
+               //10 = 0.01
+               formattedAmount = formattedAmount.substring(0,4)
            }
            3 -> {
-               formattedAmount = (amountValue/1).toString()
+               //100 = 0.1
                formattedAmount = formattedAmount.substring(0,3)
-               symbol = "rs"
            }
            4->{
-               formattedAmount = (amountValue/1000).toString()
-               formattedAmount = formattedAmount.substring(0,3)
-               symbol = "k"
+               //5960 = 5.96 =
+               formattedAmount = formattedAmount.substring(0,4)
            }
            5->{
-               formattedAmount = (amountValue/1000).toString()
+               //59600 = 59.6
                formattedAmount = formattedAmount.substring(0,4)
-               symbol = "k"
            }
            6->{
-               //159800 = 1.598 lakh
-               formattedAmount = (amountValue/100000).toString()
-               formattedAmount = formattedAmount.substring(0,4)
-               symbol = "lk"
+               //159800 = 159.8
+               formattedAmount = formattedAmount.substring(0,5)
            }
            7->{
-               // 1059800 = 10.598
-               formattedAmount = (amountValue/100000).toString()
+               // 1059800 = 1059.8k
                formattedAmount = formattedAmount.substring(0,5)
-               symbol = "lk"
            }
            8->{
-               // 10598000 = 10.598
-               formattedAmount = (amountValue/10000000).toString()
+               // 10598000 = 10598.000
                formattedAmount = formattedAmount.substring(0,5)
-               symbol = "cr"
            }
            9->{
-               // 105980000 = 10.598
-               formattedAmount = (amountValue/10000000).toString()
-               formattedAmount = formattedAmount.substring(0,5)
-               symbol = "cr"
+               // 105980000 = 105980.000
+               formattedAmount = formattedAmount.substring(0,6)
            }
        }
     return formattedAmount

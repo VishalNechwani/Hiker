@@ -37,6 +37,7 @@ class ComponentListAdapter(val componentList : List<Component>) : RecyclerView.A
 
     fun currencyFormat(value:String):String{
         val format = NumberFormat.getCurrencyInstance(Locale("en","in"))
-        return format.format(BigDecimal(value))
+        val formatted = format.format(BigDecimal(value))
+        return formatted.substring(0,formatted.length-3)
     }
 }
