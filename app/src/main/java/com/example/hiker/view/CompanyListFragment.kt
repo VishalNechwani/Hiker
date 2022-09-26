@@ -72,6 +72,7 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        counter = 0
         // Inflate the layout for this fragment
         companyListBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_company_list, container, false);
@@ -102,6 +103,7 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
             if (it.isNotEmpty()){
                 txtView.visibility = View.GONE
                 rv.visibility = View.VISIBLE
+                val n = counter
                 for(item in it){
                     hikerMap.put(counter++,item)
                 }

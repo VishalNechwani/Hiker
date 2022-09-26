@@ -85,13 +85,9 @@ class ShowComponentListFragment : Fragment() {
         taxOldSymbol = showComponentBinding.taxValueSymbolOld
         //        setting text views
         salaryOld.text = hikeViewModel.currencyConversion(param1!!.inHandOld)
-//        salaryOldSymbol.text = hikeViewModel.symbol
         salaryNew.text = hikeViewModel.currencyConversion(param1!!.inHandNew)
-//        salaryNewSymbol.text = hikeViewModel.symbol
         taxOld.text = hikeViewModel.currencyConversion(param1!!.inRegimeOld)
-//        taxOldSymbol.text = hikeViewModel.symbol
         taxNew.text = hikeViewModel.currencyConversion(param1!!.inRegimeNew)
-//        taxNewSymbol.text = hikeViewModel.symbol
         componentRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         componentRecyclerView.adapter = ComponentListAdapter(param1?.component_arr!!)
         backButtonImageView.setOnClickListener {

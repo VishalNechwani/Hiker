@@ -117,7 +117,8 @@ class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCall
 
     fun currencyFormat(value:String):String{
         val format = NumberFormat.getCurrencyInstance(Locale("en","in"))
-        return format.format(BigInteger(value))
+        val formatted = format.format(BigDecimal(value))
+        return formatted.substring(0,formatted.length-3)
     }
 
 }
