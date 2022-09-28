@@ -19,4 +19,24 @@ class RoomConverters  {
         return Gson().fromJson<List<Component>>(json, listType)
     }
 
+    @TypeConverter
+    fun toHikerJson(hikerList: List<HikeEntity>) : String {
+        return Gson().toJson(hikerList)
+    }
+
+    @TypeConverter
+    fun fromHikerJson(json: String): List<HikeEntity>{
+        val listType = object : TypeToken<List<HikeEntity>>() {}.type
+        return Gson().fromJson<List<HikeEntity>>(json, listType)
+    }
+
+    @TypeConverter
+    fun toEachHikerJson(hikerList: HikeEntity) : String {
+        return Gson().toJson(hikerList)
+    }
+
+
+
+
+
 }

@@ -17,7 +17,7 @@ class HikeRepository(val dao: HikeDao) {
 
     //delete hike entity from room
     suspend fun deleteHikes(deleteHikes: ArrayList<HikeEntity>) : Unit {
-//        return dao.deleteHike(deleteHikes.toList())
+        return dao.deleteHike(deleteHikes.toList())
     }
 
 

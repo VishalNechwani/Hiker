@@ -54,7 +54,7 @@ class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCall
             {
                 clickItemShadowing(holder)
                 companyListCallBack.showDeleteIcon()
-//                companyListBinding.menuDelete.visibility = View.VISIBLE
+                companyListCallBack.showShareIcon()
                 isEnable = true
                 positionHikeArr.add(holder.adapterPosition)
             }
@@ -73,6 +73,12 @@ class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCall
                     }
                     positionHikeArr.remove(holder.adapterPosition)
                     clickItemUnShadowing(holder)
+                }
+                if(positionHikeArr.size > 1 || positionHikeArr.size==0){
+                    companyListCallBack.HideShareIcon()
+                }
+                if(positionHikeArr.size == 1){
+                    companyListCallBack.showShareIcon()
                 }
             }else{
                 companyListCallBack.navigateToCompanyShowComponent(holder.adapterPosition,hikeMap.get(holder.adapterPosition))
@@ -105,7 +111,7 @@ class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCall
 
     fun deleteHikerInAdapter() {
         //deleting the hiker
-        var hikeEntityForDelete: ArrayList<HikeEntity>? = null
+        var hikeEntityForDelete: ArrayList<HikeEntity>? = ArrayList()
         var count = 0
         for(eachHikePosition in positionHikeArr){
             hikeEntityForDelete!!.add(hikeMap.get(eachHikePosition)!!)

@@ -1,5 +1,6 @@
 package com.example.hiker.view
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -57,12 +59,12 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
     private lateinit var errorMessage:String
     private lateinit var error_message_textview:TextView
     private lateinit var deleteImg:ImageView
+    private lateinit var shareIcon:ImageView
     private lateinit var hikerMap:HashMap<Int,HikeEntity>
     private lateinit var materialDeleteAlert: MaterialAlertDialogBuilder
     private lateinit var companyListAdapter : CompanyListAdapter
     private var counter = 0
-
-
+    var backPressedTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,12 +94,17 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
     private fun initView() {
         rv = companyListBinding.recyclerView
         deleteImg = companyListBinding.menuDelete
+        shareIcon = companyListBinding.shareIcon
         deleteImg.visibility = View.INVISIBLE
+        shareIcon.visibility = View.INVISIBLE
         val addButton =  companyListBinding.addButton
         val txtView = companyListBinding.noHikesTxt
         rv.layoutManager = LinearLayoutManager(context)
         companyListBinding.menuDelete.setOnClickListener {
             showDeleteAlert()
+        }
+        companyListBinding.shareIcon.setOnClickListener {
+            showShareAlert()
         }
         hikeViewModel.getHikes().observe(this, Observer {
             if (it.isNotEmpty()){
@@ -125,7 +132,6 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
 
 
     }
-
 
     private fun launchCustomAlertDialog() {
 
@@ -242,6 +248,17 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
         materialDeleteAlert.show()
     }
 
+    private fun showShareAlert(){
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
+    }
+
     override fun showDeleteIcon() {
         companyListBinding.menuDelete.visibility = View.VISIBLE
     }
@@ -250,8 +267,16 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
         companyListBinding.menuDelete.visibility = View.GONE
     }
 
+    override fun showShareIcon(){
+        companyListBinding.shareIcon.visibility = View.VISIBLE
+    }
+
+    override fun HideShareIcon() {
+        companyListBinding.shareIcon.visibility = View.GONE
+    }
+
     override fun deleteHiker(deleteHikes: ArrayList<HikeEntity>) {
-//        hikeViewModel.deleteHiker(deleteHikes)
+        hikeViewModel.deleteHiker(deleteHikes)
     }
 
     override fun navigateToCompanyShowComponent(holderPosition: Int, hikeEntity: HikeEntity?) {

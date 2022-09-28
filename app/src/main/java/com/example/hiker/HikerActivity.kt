@@ -8,4 +8,14 @@ class HikerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
+
+    override fun onBackPressed() {
+        val count = fragmentManager.backStackEntryCount
+        if(count == 0) {
+            super.onBackPressed();
+        }
+        else{
+            fragmentManager.popBackStack()
+        }
+    }
 }
