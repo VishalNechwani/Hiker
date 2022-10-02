@@ -1,6 +1,7 @@
 package com.example.hiker.view
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -104,7 +105,7 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
             showDeleteAlert()
         }
         companyListBinding.shareIcon.setOnClickListener {
-            showShareAlert()
+//            showShareAlert()
         }
         hikeViewModel.getHikes().observe(this, Observer {
             if (it.isNotEmpty()){
@@ -249,14 +250,30 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
     }
 
     private fun showShareAlert(){
+
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
             type = "text/plain"
         }
+        var linkedInAppFound = false
+        val packageManager = context!!.packageManager
+        val packageList = packageManager.queryIntentActivities(sendIntent,0)
+        for(packageEachInfo in packageList){
+            if(packageEachInfo.activityInfo.packageName.toLowerCase().startsWith("com.linkedin")){
+                sendIntent.`package` = packageEachInfo.activityInfo.packageName
+                linkedInAppFound = true
+                break
+            }
+        }
 
-        val shareIntent = Intent.createChooser(sendIntent, null)
-        startActivity(shareIntent)
+        if(linkedInAppFound){
+            startActivity(sendIntent)
+        }
+        else{
+            val toast = Toast.makeText(context, "LinkedIn app not Insatlled in your mobile", Toast.LENGTH_SHORT)
+            toast.show()
+        }
     }
 
     override fun showDeleteIcon() {

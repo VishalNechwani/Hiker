@@ -16,6 +16,7 @@ class MainViewModel(val hikeRepository: HikeRepository) : ViewModel(){
     var isCompanyNameProper = false
     var isComponentAdd = false
     lateinit var symbol : String
+    var addComponentRedundentList = ArrayList<String>()
     init {
         allHikes = hikeRepository.getAllHikes()
     }

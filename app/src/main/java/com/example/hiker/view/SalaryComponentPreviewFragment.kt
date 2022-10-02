@@ -14,6 +14,8 @@ import com.example.hiker.databinding.FragmentSalaryComponentPreviewBinding
 import android.content.DialogInterface
 import android.graphics.Color
 import android.os.AsyncTask
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -229,7 +231,6 @@ class SalaryComponentPreviewFragment : Fragment() {
         error_message_textview = customAlertDialogView.findViewById<TextView>(R.id.error_message)
         error_message_textview.visibility = View.INVISIBLE
         //adding click to text views
-
         var arrAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
             context!!,android.R.layout.simple_spinner_item,
             resources.getStringArray(R.array.component))
@@ -237,16 +238,6 @@ class SalaryComponentPreviewFragment : Fragment() {
         val position = arrAdapter.getPosition("Part of salary like allowances...")
         select_layout.setSelection(position)
         builder.setView(dialogLayout).show()
-
-        val addClick = { dialog: DialogInterface, which: Int ->
-            val nameValue = name.toString()
-            val valueValue = value.toString()
-            if(name!=null && value!=null) {
-                //update the adapter
-                compAdapter.adapterUpdate(Component(nameValue,valueValue,true))
-            }
-        }
-
         addComponentTxtView.setOnClickListener {
             val comName = name.text.toString()
             val comValue = value.text.toString()
@@ -255,7 +246,7 @@ class SalaryComponentPreviewFragment : Fragment() {
                 showingMessage(errorMessage,"#ff0000")
                 return@setOnClickListener
             }
-            if(regexComponentName(comName)){
+            if(!regexComponentName(comName)){
                 errorMessage = "Component Name cannot be null"
                 showingMessage(errorMessage,"#ff0000")
                 return@setOnClickListener
@@ -265,6 +256,14 @@ class SalaryComponentPreviewFragment : Fragment() {
                 showingMessage(errorMessage,"#ff0000")
                 return@setOnClickListener
             }
+            if (hikeViewModel.addComponentRedundentList.contains(comName.toLowerCase())){
+                errorMessage = "Component is already added, please define something new..."
+                showingMessage(errorMessage,"#ff0000")
+                return@setOnClickListener
+            }
+            compAdapter.adapterUpdate(Component(comName,comValue,true))
+            hikeViewModel.addComponentRedundentList.add(comName.toLowerCase())
+            alertDialog.dismiss()
         }
 
         cancelTxtView.setOnClickListener {
