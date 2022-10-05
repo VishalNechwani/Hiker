@@ -105,25 +105,30 @@ class SalaryComponentPreviewFragment : Fragment() {
         progressCircle.visibility = View.GONE
         val finalInHand = salaryComponentBinding.finalInHandButton
         val addComponentButton = salaryComponentBinding.addComponentButton
-        val basicPay = (ctc.times(40)).div(100)
+        val basicPay = (ctc.times(30)).div(100)
         val hra = (basicPay.times(50)).div(100)
         val pf = (basicPay.times(12)).div(100)
         val gratuity = ((basicPay.times(4.81)).div(100)).toInt()
-        val otherAllowances = (ctc - (basicPay + hra + pf + gratuity))
+        val medicalInsurance = 7200
+        val professionalTax = 2400
+        val otherAllowances = (ctc - (basicPay + hra + pf + gratuity-medicalInsurance-professionalTax))
         val ctcString = ctc.toString()
         val hraString = hra.toString()
         val basicPayString = basicPay.toString()
         val otherAllowancesString = otherAllowances.toString()
         val pfString = pf.toString()
         val gratuityString = gratuity.toString()
-        val compArr = ArrayList<String>()
-        val valueArr = ArrayList<String>()
+        val medicalInsuranceStr = "7200"
+        val professionalTaxStr = "2400"
         arrComponent = ArrayList<Component>();
-        arrComponent.add(Component("Basic Pay", basicPayString, true))
-        arrComponent.add(Component("HRA", hraString, true))
-        arrComponent.add(Component("Other Allowances", otherAllowancesString, true))
-        arrComponent.add(Component("PF", pfString, false))
-        arrComponent.add(Component("Gratuity", gratuityString, false))
+        arrComponent.add(Component("Basic Pay", basicPayString, true,false))
+        arrComponent.add(Component("HRA", hraString, true,false))
+        arrComponent.add(Component("Other Allowances", otherAllowancesString, true,false))
+        arrComponent.add(Component("PF", pfString, false,false))
+        arrComponent.add(Component("Gratuity", gratuityString, false,false))
+        arrComponent.add(Component("Medical Insurance",medicalInsuranceStr,false,false))
+        arrComponent.add(Component("Professional Tax",professionalTaxStr,false,false))
+        arrComponent.add(Component("House Rent","75000",false,true))
         compAdapter = SalaryComponentAdapter(arrComponent)
         rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv.adapter = compAdapter
@@ -177,17 +182,22 @@ class SalaryComponentPreviewFragment : Fragment() {
         val regimeNew = REGIME.NEW_TAX_REGIME
         val regimeOld = REGIME.OLD_TAX_REGIME
         var i = 0
+        var houseRentValue = 75000
         for (component in arrComponent){
+            if(component.isHouseRent){
+                houseRentValue =  component.valuer.toInt()
+            }
             if(component.toadder){
                 taxableSumIncome += Integer.parseInt(arrComponent.get(i++).valuer)
             }
         }
+        taxableSumIncome = taxableSumIncome - houseRentValue // minusing the HRA from taxable income
         val taxPercentagesNew = taxCalculation(taxableSumIncome,regimeNew)
         val taxPercentagesOld = taxCalculation(taxableSumIncome,regimeOld)
-        taxesNew = (taxableSumIncome * taxPercentagesNew)/100
-        taxesOld = (taxableSumIncome * taxPercentagesOld)/100
+        taxesNew = ((taxableSumIncome-500000) * taxPercentagesNew)/100
+        taxesOld = ((taxableSumIncome-500000) * taxPercentagesOld)/100
         salaryNew  = ((taxableSumIncome - taxesOld)/12)
-        salaryOld  = ((taxableSumIncome - (taxesOld)/100)/12)
+        salaryOld  = ((taxableSumIncome - taxesOld)/12)
         val builder = AlertDialog.Builder(context)
         val inflater = layoutInflater
         val finalInhandLayout = inflater.inflate(R.layout.final_in_hand_alert, null)
@@ -226,10 +236,9 @@ class SalaryComponentPreviewFragment : Fragment() {
         var select_layout = dialogLayout.findViewById<AutoCompleteTextView>(R.id.filled_exposed_dropdown)
         val value = dialogLayout.findViewById<EditText>(R.id.component_value_edit_text)
         val addComponentTxtView = dialogLayout.findViewById<TextView>(R.id.add_component_button)
-        val cancelTxtView = dialogLayout.findViewById<TextView>(R.id.cancel_button)
+//        val cancelTxtView = dialogLayout.findViewById<TextView>(R.id.cancel_button)
         val alertDialog = builder.create()
         error_message_textview = customAlertDialogView.findViewById<TextView>(R.id.error_message)
-        error_message_textview.visibility = View.INVISIBLE
         //adding click to text views
         var arrAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
             context!!,android.R.layout.simple_spinner_item,
@@ -252,23 +261,22 @@ class SalaryComponentPreviewFragment : Fragment() {
                 return@setOnClickListener
             }
             if(comValue.isEmpty()){
-                errorMessage = "Component value is empty please add some value"
+                errorMessage =  "Component value is empty please add some value"
                 showingMessage(errorMessage,"#ff0000")
                 return@setOnClickListener
             }
             if (hikeViewModel.addComponentRedundentList.contains(comName.toLowerCase())){
-                errorMessage = "Component is already added, please define something new..."
+                errorMessage = "Component is already added..."
                 showingMessage(errorMessage,"#ff0000")
                 return@setOnClickListener
             }
-            compAdapter.adapterUpdate(Component(comName,comValue,true))
+            compAdapter.adapterUpdate(Component(comName,comValue,true,false))
             hikeViewModel.addComponentRedundentList.add(comName.toLowerCase())
             alertDialog.dismiss()
         }
-
-        cancelTxtView.setOnClickListener {
-            alertDialog.dismiss()
-        }
+//        cancelTxtView.setOnClickListener {
+//            alertDialog.dismiss()
+//        }
       }
 
     private fun regexComponentName(value: String): Boolean {

@@ -11,11 +11,14 @@ data class Component(
     @SerializedName("valuer")
     val valuer:String,
     @SerializedName("toadder")
-    val toadder:Boolean
+    val toadder:Boolean,
+    @SerializedName("houserent")
+    val isHouseRent:Boolean
     ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
+        parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte()
     ) {
     }

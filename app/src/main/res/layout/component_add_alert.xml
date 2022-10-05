@@ -77,11 +77,10 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/error_message"
+        android:id="@+id/error_message_component_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:textColor="@color/button_gray"
         app:layout_constraintStart_toStartOf="@+id/select_component_type"
         app:layout_constraintTop_toBottomOf="@+id/select_component_type" />
 
@@ -89,25 +88,25 @@
         android:id="@+id/add_component_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:text="@string/add_alert"
         android:textColor="@color/teal_200"
         android:textSize="17sp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintEnd_toEndOf="@+id/select_component_type"
         app:layout_constraintTop_toBottomOf="@+id/select_component_type" />
 
-    <TextView
-        android:id="@+id/cancel_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/cancel_alert"
-        android:textColor="@color/teal_200"
-        android:textSize="17sp"
-        android:layout_marginEnd="12dp"
-        app:layout_constraintEnd_toStartOf="@+id/add_component_button"
-        app:layout_constraintTop_toBottomOf="@+id/select_component_type" />
+<!--    <TextView-->
+<!--        android:id="@+id/cancel_button"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="40dp"-->
+<!--        android:text="@string/cancel_alert"-->
+<!--        android:textColor="@color/teal_200"-->
+<!--        android:textSize="17sp"-->
+<!--        android:layout_marginEnd="12dp"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/add_component_button"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/select_component_type" />-->
 
     <TextView
         android:id="@+id/invisible"
@@ -117,7 +116,7 @@
         android:textSize="17sp"
         android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toStartOf="@+id/add_component_button"
-        app:layout_constraintTop_toBottomOf="@+id/cancel_button" />
+        app:layout_constraintTop_toBottomOf="@+id/add_component_button" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
