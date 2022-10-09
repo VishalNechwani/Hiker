@@ -22,10 +22,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hiker.HikerApplication
+import com.example.hiker.adapter.SalaryComponentCallBack
 import com.example.hiker.model.HikeEntity
 import com.example.hiker.utils.Component
 import com.example.hiker.viewmodel.MainViewModel
 import com.example.hiker.viewmodel.MainViewModelFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textview.MaterialTextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
@@ -52,7 +54,7 @@ enum class REGIME{
     NEW_TAX_REGIME
 }
 
-class SalaryComponentPreviewFragment : Fragment() {
+class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
     // TODO: Rename and change types of parameters
     private var companyName: String? = null
     private var ctc: Int = 0  //this is expected
@@ -64,6 +66,7 @@ class SalaryComponentPreviewFragment : Fragment() {
     private lateinit var customAlertDialogView : View
     private lateinit var arrComponent : ArrayList<Component>
     private lateinit var  progressCircle : ProgressBar
+    private lateinit var deleteIcon:ImageView
     private var taxesNew : Int = 0
     private var taxesOld : Int = 0
     private var salaryNew : Int = 0
@@ -112,6 +115,7 @@ class SalaryComponentPreviewFragment : Fragment() {
             .inflate(R.layout.companyintroalert, null, false)
         rv = salaryComponentBinding.recyclerView
         progressCircle = salaryComponentBinding.progressBar
+        deleteIcon = salaryComponentBinding.menuDelete
         progressCircle.visibility = View.GONE
         val finalInHand = salaryComponentBinding.finalInHandButton
         val addComponentButton = salaryComponentBinding.addComponentButton
@@ -121,7 +125,7 @@ class SalaryComponentPreviewFragment : Fragment() {
         gratuity = ((basicPay.times(4.81)).div(100)).toInt()
         medicalInsurance = 7200
         professionalTax = 2400
-        otherAllowances = (ctc - (basicPay + hra + (2*pf) + gratuity-medicalInsurance-professionalTax))
+        otherAllowances = (ctc - (basicPay + hra + pf + gratuity+medicalInsurance+professionalTax))
         val ctcString = ctc.toString()
         val hraString = hra.toString()
         val basicPayString = basicPay.toString()
@@ -138,7 +142,7 @@ class SalaryComponentPreviewFragment : Fragment() {
         arrComponent.add(Component("Gratuity", gratuityString, false,false))
         arrComponent.add(Component("Medical Insurance",medicalInsuranceStr,false,false))
         arrComponent.add(Component("Professional Tax",professionalTaxStr,false,false))
-        compAdapter = SalaryComponentAdapter(arrComponent)
+        compAdapter = SalaryComponentAdapter(arrComponent,this)
         rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv.adapter = compAdapter
         addComponentButton.setOnClickListener {
@@ -188,6 +192,7 @@ class SalaryComponentPreviewFragment : Fragment() {
     private fun calculateFinal(arrComponent: ArrayList<Component>){
         //calculating final salary means inHand
         if(!isComponentsEqualToCtc(arrComponent,ctc)){
+            showingNotEqualAlert()
             return
         }
         val regimeNew = REGIME.NEW_TAX_REGIME
@@ -223,11 +228,20 @@ class SalaryComponentPreviewFragment : Fragment() {
         }
     }
 
+    private fun showingNotEqualAlert() {
+        MaterialAlertDialogBuilder(context!!)
+            .setMessage(resources.getString(R.string.component_amount_error))
+            .setPositiveButton(resources.getString(R.string.error_dailog_ok)) { dialog, which ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
     private fun isComponentsEqualToCtc(arrComponent: ArrayList<Component>, ctc: Int): Boolean {
         var isSame = true
         var value = 0
         for(component in arrComponent){
-            value += component.valuer.toInt()
+                value += component.valuer.toInt()
         }
         if(value != ctc){
             isSame = false
@@ -362,5 +376,17 @@ class SalaryComponentPreviewFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun showDeleteIcon() {
+        salaryComponentBinding.menuDelete.visibility = View.VISIBLE
+    }
+
+    override fun HideDeleteIcon() {
+        salaryComponentBinding.menuDelete.visibility = View.GONE
+    }
+
+    override fun deleteHiker(deleteHikes: ArrayList<HikeEntity>) {
+        TODO("Not yet implemented")
     }
 }
