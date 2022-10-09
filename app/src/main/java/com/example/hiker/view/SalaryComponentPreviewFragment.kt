@@ -13,6 +13,7 @@ import com.example.hiker.adapter.SalaryComponentAdapter
 import com.example.hiker.databinding.FragmentSalaryComponentPreviewBinding
 import android.content.DialogInterface
 import android.graphics.Color
+import android.icu.text.NumberFormat
 import android.os.AsyncTask
 import android.text.Editable
 import android.text.TextWatcher
@@ -30,6 +31,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.util.*
 import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
@@ -67,7 +70,14 @@ class SalaryComponentPreviewFragment : Fragment() {
     private var salaryOld : Int = 0
     private lateinit var errorMessage:String
     private lateinit var error_message_textview:TextView
-
+    //salary variables
+    var basicPay = 0
+    var hra = 0
+    var pf = 0
+    var gratuity = 0
+    var medicalInsurance = 0
+    var professionalTax = 0
+    var otherAllowances = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,13 +115,13 @@ class SalaryComponentPreviewFragment : Fragment() {
         progressCircle.visibility = View.GONE
         val finalInHand = salaryComponentBinding.finalInHandButton
         val addComponentButton = salaryComponentBinding.addComponentButton
-        val basicPay = (ctc.times(30)).div(100)
-        val hra = (basicPay.times(50)).div(100)
-        val pf = (basicPay.times(12)).div(100)
-        val gratuity = ((basicPay.times(4.81)).div(100)).toInt()
-        val medicalInsurance = 7200
-        val professionalTax = 2400
-        val otherAllowances = (ctc - (basicPay + hra + pf + gratuity-medicalInsurance-professionalTax))
+        basicPay = (ctc.times(30)).div(100)
+        hra = (basicPay.times(50)).div(100)
+        pf = (basicPay.times(12)).div(100)
+        gratuity = ((basicPay.times(4.81)).div(100)).toInt()
+        medicalInsurance = 7200
+        professionalTax = 2400
+        otherAllowances = (ctc - (basicPay + hra + (2*pf) + gratuity-medicalInsurance-professionalTax))
         val ctcString = ctc.toString()
         val hraString = hra.toString()
         val basicPayString = basicPay.toString()
@@ -128,7 +138,6 @@ class SalaryComponentPreviewFragment : Fragment() {
         arrComponent.add(Component("Gratuity", gratuityString, false,false))
         arrComponent.add(Component("Medical Insurance",medicalInsuranceStr,false,false))
         arrComponent.add(Component("Professional Tax",professionalTaxStr,false,false))
-        arrComponent.add(Component("House Rent","75000",false,true))
         compAdapter = SalaryComponentAdapter(arrComponent)
         rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv.adapter = compAdapter
@@ -178,26 +187,21 @@ class SalaryComponentPreviewFragment : Fragment() {
 
     private fun calculateFinal(arrComponent: ArrayList<Component>){
         //calculating final salary means inHand
-        var taxableSumIncome = 0;
+        if(!isComponentsEqualToCtc(arrComponent,ctc)){
+            return
+        }
         val regimeNew = REGIME.NEW_TAX_REGIME
         val regimeOld = REGIME.OLD_TAX_REGIME
         var i = 0
-        var houseRentValue = 75000
-        for (component in arrComponent){
-            if(component.isHouseRent){
-                houseRentValue =  component.valuer.toInt()
-            }
-            if(component.toadder){
-                taxableSumIncome += Integer.parseInt(arrComponent.get(i++).valuer)
-            }
-        }
-        taxableSumIncome = taxableSumIncome - houseRentValue // minusing the HRA from taxable income
-        val taxPercentagesNew = taxCalculation(taxableSumIncome,regimeNew)
-        val taxPercentagesOld = taxCalculation(taxableSumIncome,regimeOld)
-        taxesNew = ((taxableSumIncome-500000) * taxPercentagesNew)/100
-        taxesOld = ((taxableSumIncome-500000) * taxPercentagesOld)/100
-        salaryNew  = ((taxableSumIncome - taxesOld)/12)
-        salaryOld  = ((taxableSumIncome - taxesOld)/12)
+        //calculation
+        val gross_salary = ctc - pf - gratuity
+        var taxableIncome = ctc - gratuity
+        val taxPercentagesNew = taxCalculation(taxableIncome,regimeNew)
+        val taxPercentagesOld = taxCalculation(taxableIncome,regimeOld)
+        taxesNew = ((taxableIncome-500000) * taxPercentagesNew)/100
+        taxesOld = ((taxableIncome-500000) * taxPercentagesOld)/100
+        salaryNew = (gross_salary - taxesNew - pf - professionalTax)/12
+        salaryOld = (gross_salary - taxesOld - pf - professionalTax)/12
         val builder = AlertDialog.Builder(context)
         val inflater = layoutInflater
         val finalInhandLayout = inflater.inflate(R.layout.final_in_hand_alert, null)
@@ -206,10 +210,10 @@ class SalaryComponentPreviewFragment : Fragment() {
         val viewSalaryNew = finalInhandLayout.findViewById<MaterialTextView>(R.id.inhandnew)
         val viewSalaryOld = finalInhandLayout.findViewById<MaterialTextView>(R.id.inhandold)
         builder.setView(finalInhandLayout)
-        viewTaxNew.text = taxesNew.toString()
-        viewTaxOld.text = taxesOld.toString()
-        viewSalaryNew.text = salaryNew.toString()
-        viewSalaryOld.text = salaryOld.toString()
+        viewTaxNew.text = currencyFormat(taxesNew.toString())
+        viewTaxOld.text = currencyFormat(taxesOld.toString())
+        viewSalaryNew.text = currencyFormat(salaryNew.toString())
+        viewSalaryOld.text = currencyFormat(salaryOld.toString())
         with(builder){
             setPositiveButton("Save", DialogInterface.OnClickListener {
                     dialog, id -> saveButton()
@@ -217,6 +221,18 @@ class SalaryComponentPreviewFragment : Fragment() {
             setNegativeButton("Cancel", DialogInterface.OnClickListener(function = cancelClick))
             show()
         }
+    }
+
+    private fun isComponentsEqualToCtc(arrComponent: ArrayList<Component>, ctc: Int): Boolean {
+        var isSame = true
+        var value = 0
+        for(component in arrComponent){
+            value += component.valuer.toInt()
+        }
+        if(value != ctc){
+            isSame = false
+        }
+        return isSame
     }
 
     private fun saveButton() {
@@ -228,6 +244,12 @@ class SalaryComponentPreviewFragment : Fragment() {
         dialog.dismiss()
     }
 
+    fun currencyFormat(value:String):String{
+        val format = NumberFormat.getCurrencyInstance(Locale("en","in"))
+        val formatted = format.format(BigDecimal(value))
+        return formatted.substring(0,formatted.length-3)
+    }
+
     private fun showingAlert() {
         val builder = AlertDialog.Builder(context)
         val inflater = layoutInflater
@@ -236,7 +258,6 @@ class SalaryComponentPreviewFragment : Fragment() {
         var select_layout = dialogLayout.findViewById<AutoCompleteTextView>(R.id.filled_exposed_dropdown)
         val value = dialogLayout.findViewById<EditText>(R.id.component_value_edit_text)
         val addComponentTxtView = dialogLayout.findViewById<TextView>(R.id.add_component_button)
-//        val cancelTxtView = dialogLayout.findViewById<TextView>(R.id.cancel_button)
         val alertDialog = builder.create()
         error_message_textview = customAlertDialogView.findViewById<TextView>(R.id.error_message)
         //adding click to text views
@@ -274,9 +295,6 @@ class SalaryComponentPreviewFragment : Fragment() {
             hikeViewModel.addComponentRedundentList.add(comName.toLowerCase())
             alertDialog.dismiss()
         }
-//        cancelTxtView.setOnClickListener {
-//            alertDialog.dismiss()
-//        }
       }
 
     private fun regexComponentName(value: String): Boolean {

@@ -113,4 +113,16 @@
 
         </TableRow>
     </TableLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/salary_info"
+        app:layout_constraintTop_toBottomOf="@+id/tabla_cuerpo"
+        app:layout_constraintStart_toStartOf="@+id/tabla_cuerpo"
+        android:layout_marginTop="18dp"
+        android:textSize="12sp"
+        android:paddingRight="40dp"
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

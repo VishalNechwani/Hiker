@@ -43,4 +43,5 @@
     <string name="no">NO</string>
     <string name="image_back_button">imagebackbutton</string>
     <string name="image_background">imagebackground</string>
+    <string name="salary_info">This salary is excluded investment, Investing money will increase your inhand...</string>
 </resources>
