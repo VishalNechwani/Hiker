@@ -67,12 +67,16 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
     private lateinit var arrComponent : ArrayList<Component>
     private lateinit var  progressCircle : ProgressBar
     private lateinit var deleteIcon:ImageView
+    private lateinit var deleteButton:Button
     private var taxesNew : Int = 0
     private var taxesOld : Int = 0
     private var salaryNew : Int = 0
     private var salaryOld : Int = 0
     private lateinit var errorMessage:String
     private lateinit var error_message_textview:TextView
+    private lateinit var hikerMap:HashMap<Int,Component>
+    private lateinit var materialDeleteAlert: MaterialAlertDialogBuilder
+
     //salary variables
     var basicPay = 0
     var hra = 0
@@ -81,6 +85,7 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
     var medicalInsurance = 0
     var professionalTax = 0
     var otherAllowances = 0
+    private var counter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,7 +120,12 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
             .inflate(R.layout.companyintroalert, null, false)
         rv = salaryComponentBinding.recyclerView
         progressCircle = salaryComponentBinding.progressBar
-        deleteIcon = salaryComponentBinding.menuDelete
+        materialDeleteAlert = MaterialAlertDialogBuilder(context!!)
+        deleteButton = salaryComponentBinding.deleteCo
+        deleteButton.isEnabled = false
+//        deleteIcon = salaryComponentBinding.menuDeleteSalaryPreview
+//        deleteIcon.visibility = View.GONE
+        hikerMap = HashMap()
         progressCircle.visibility = View.GONE
         val finalInHand = salaryComponentBinding.finalInHandButton
         val addComponentButton = salaryComponentBinding.addComponentButton
@@ -142,7 +152,12 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
         arrComponent.add(Component("Gratuity", gratuityString, false,false))
         arrComponent.add(Component("Medical Insurance",medicalInsuranceStr,false,false))
         arrComponent.add(Component("Professional Tax",professionalTaxStr,false,false))
-        compAdapter = SalaryComponentAdapter(arrComponent,this)
+        //iterating throughout the array
+        val n = counter
+        for(item in arrComponent){
+            hikerMap.put(counter++,item)
+        }
+        compAdapter = SalaryComponentAdapter(hikerMap,arrComponent,this)
         rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv.adapter = compAdapter
         addComponentButton.setOnClickListener {
@@ -150,6 +165,10 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
         }
         finalInHand.setOnClickListener {
             calculateFinal(arrComponent)
+//            showDeleteAlert()
+        }
+        deleteButton.setOnClickListener {
+            showDeleteAlert()
         }
     }
 
@@ -379,14 +398,30 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
     }
 
     override fun showDeleteIcon() {
-        salaryComponentBinding.menuDelete.visibility = View.VISIBLE
+        salaryComponentBinding.menuDeleteSalaryPreview.visibility = View.VISIBLE
     }
 
     override fun HideDeleteIcon() {
-        salaryComponentBinding.menuDelete.visibility = View.GONE
+        salaryComponentBinding.menuDeleteSalaryPreview.visibility = View.GONE
     }
 
-    override fun deleteHiker(deleteHikes: ArrayList<HikeEntity>) {
-        TODO("Not yet implemented")
+    override fun deleteComponentButtonEnable() {
+        deleteButton.isEnabled = true
+    }
+
+    override fun deleteComponentButtonDisEnable() {
+        deleteButton.isEnabled = false
+    }
+
+    private fun showDeleteAlert() {
+        val alert = materialDeleteAlert.create()
+        materialDeleteAlert.setMessage("Do you really want to delete this hiker ?")
+        materialDeleteAlert.setPositiveButton(android.R.string.yes){ dialog, which ->
+            compAdapter.deleteHikerInAdapter()
+        }
+        materialDeleteAlert.setNegativeButton(android.R.string.no) { dialog, which ->
+            alert.dismiss()
+        }
+        materialDeleteAlert.show()
     }
 }

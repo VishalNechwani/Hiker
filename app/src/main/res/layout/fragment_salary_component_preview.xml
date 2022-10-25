@@ -21,14 +21,15 @@
 
 
         <ImageView
-            android:id="@+id/menu_delete"
+            android:id="@+id/menu_delete_salary_preview"
             android:layout_width="30dp"
             android:src="@drawable/ic_delete"
             android:layout_height="30dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginEnd="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="0dp"
+            android:visibility="visible"
             />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -71,8 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.5"
-                />
+                app:layout_constraintGuide_percent="0.50" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/add_component_button"
@@ -107,6 +107,25 @@
                 app:rippleColor="#33AAAAAA"
                 app:strokeColor="@color/button_gray"
                 app:strokeWidth="2dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/delete_co"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/delete_component"
+                android:textColor="@color/button_gray"
+                android:textSize="12sp"
+                app:backgroundTint="@android:color/white"
+                app:cornerRadius="8dp"
+                app:layout_constraintStart_toEndOf="@+id/add_component_button"
+                app:layout_constraintEnd_toStartOf="@+id/final_in_hand_button"
+                app:layout_constraintTop_toBottomOf="@+id/add_component_button"
+                app:rippleColor="#33AAAAAA"
+                app:strokeColor="@color/button_gray"
+                app:strokeWidth="2dp" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ProgressBar

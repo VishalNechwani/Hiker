@@ -126,6 +126,5 @@ class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCall
         val formatted = format.format(BigDecimal(value))
         return formatted.substring(0,formatted.length-3)
     }
-
 }
 

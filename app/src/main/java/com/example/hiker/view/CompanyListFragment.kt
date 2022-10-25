@@ -249,33 +249,6 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
         materialDeleteAlert.show()
     }
 
-    private fun showShareAlert(){
-
-        val sendIntent: Intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "This is my text to send.")
-            type = "text/plain"
-        }
-        var linkedInAppFound = false
-        val packageManager = context!!.packageManager
-        val packageList = packageManager.queryIntentActivities(sendIntent,0)
-        for(packageEachInfo in packageList){
-            if(packageEachInfo.activityInfo.packageName.toLowerCase().startsWith("com.linkedin")){
-                sendIntent.`package` = packageEachInfo.activityInfo.packageName
-                linkedInAppFound = true
-                break
-            }
-        }
-
-        if(linkedInAppFound){
-            startActivity(sendIntent)
-        }
-        else{
-            val toast = Toast.makeText(context, "LinkedIn app not Insatlled in your mobile", Toast.LENGTH_SHORT)
-            toast.show()
-        }
-    }
-
     override fun showDeleteIcon() {
         companyListBinding.menuDelete.visibility = View.VISIBLE
     }

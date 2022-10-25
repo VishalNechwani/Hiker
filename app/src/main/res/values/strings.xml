@@ -46,4 +46,5 @@
     <string name="salary_info">This salary is excluded investment, Investing money will increase your inhand...</string>
     <string name="component_amount_error">Component Amount is not equal to CTC, Please make changes in component Amount</string>
     <string name="error_dailog_ok">ok</string>
+    <string name="delete_component">delete Component</string>
 </resources>
