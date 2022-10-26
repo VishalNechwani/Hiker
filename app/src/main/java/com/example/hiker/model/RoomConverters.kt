@@ -34,9 +34,4 @@ class RoomConverters  {
     fun toEachHikerJson(hikerList: HikeEntity) : String {
         return Gson().toJson(hikerList)
     }
-
-
-
-
-
 }

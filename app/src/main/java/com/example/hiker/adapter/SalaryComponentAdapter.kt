@@ -12,7 +12,7 @@ import com.example.hiker.utils.Component
 import com.google.android.material.card.MaterialCardView
 import java.util.HashMap
 
-class SalaryComponentAdapter(val component: HashMap<Int, Component>,val componentArrayList: ArrayList<Component>, val companyListCallBack: SalaryComponentCallBack) : RecyclerView.Adapter<SalaryComponentAdapter.ViewHolder>(){
+class SalaryComponentAdapter(var component: HashMap<Int, Component>,val componentArrayList: ArrayList<Component>, val companyListCallBack: SalaryComponentCallBack) : RecyclerView.Adapter<SalaryComponentAdapter.ViewHolder>(){
 
     var isEnable = false
     var positionHikeArr : ArrayList<Int> =  ArrayList()
@@ -37,7 +37,6 @@ class SalaryComponentAdapter(val component: HashMap<Int, Component>,val componen
             {
                 clickItemShadowing(holder)
                 companyListCallBack.deleteComponentButtonEnable()
-                companyListCallBack.showDeleteIcon()
                 isEnable = true
                 positionHikeArr.add(holder.adapterPosition)
                 positionHikerComponent.add(component.get(holder.adapterPosition)!!)
@@ -55,7 +54,6 @@ class SalaryComponentAdapter(val component: HashMap<Int, Component>,val componen
                     if(positionHikeArr.size == 1){
                         isEnable = false
                         companyListCallBack.deleteComponentButtonDisEnable()
-                        companyListCallBack.HideDeleteIcon()
                     }
                     positionHikeArr.remove(holder.adapterPosition)
                     positionHikerComponent.remove(component.get(holder.adapterPosition)!!)
@@ -80,7 +78,12 @@ class SalaryComponentAdapter(val component: HashMap<Int, Component>,val componen
     fun adapterUpdate(componentUpdate : Component){
         val n = component.size
         component.put(n,componentUpdate)
+        componentArrayList.add(componentUpdate)
         notifyDataSetChanged()
+    }
+
+    fun getFinalComponentList():ArrayList<Component>{
+       return componentArrayList
     }
 
     class ViewHolder(ItemView: View) : RecyclerView.ViewHolder(ItemView) {
@@ -96,6 +99,7 @@ class SalaryComponentAdapter(val component: HashMap<Int, Component>,val componen
         componentArrayList.removeAll(positionHikerComponent)
         rappingCoListToHashMap()
         companyListCallBack.deleteComponentButtonDisEnable()
+        companyListCallBack.deleteRedundantComponent(positionHikerComponent)
 //        for(eachHikePosition in positionHikeArr){
 //            hikeEntityForDelete!!.add(component.get(eachHikePosition)!!)
 //            component.remove(eachHikePosition)
@@ -114,8 +118,14 @@ class SalaryComponentAdapter(val component: HashMap<Int, Component>,val componen
 
     private fun rappingCoListToHashMap() {
         var i = 0
-        for(each in positionHikerComponent){
-            component.remove(positionHikeArr.get(i++))
+        var tHashMap = HashMap<Int,Component>()
+        // restructing the HashMap
+        for(each in componentArrayList){
+            tHashMap.put(i++,each)
         }
+        component = tHashMap
+//        for(each in positionHikerComponent){
+//            component.remove(positionHikeArr.get(i++))
+//        }
     }
 }

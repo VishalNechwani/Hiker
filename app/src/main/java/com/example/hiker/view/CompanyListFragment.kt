@@ -60,7 +60,6 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
     private lateinit var errorMessage:String
     private lateinit var error_message_textview:TextView
     private lateinit var deleteImg:ImageView
-    private lateinit var shareIcon:ImageView
     private lateinit var hikerMap:HashMap<Int,HikeEntity>
     private lateinit var materialDeleteAlert: MaterialAlertDialogBuilder
     private lateinit var companyListAdapter : CompanyListAdapter
@@ -95,17 +94,12 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
     private fun initView() {
         rv = companyListBinding.recyclerView
         deleteImg = companyListBinding.menuDelete
-        shareIcon = companyListBinding.shareIcon
         deleteImg.visibility = View.INVISIBLE
-        shareIcon.visibility = View.INVISIBLE
         val addButton =  companyListBinding.addButton
         val txtView = companyListBinding.noHikesTxt
         rv.layoutManager = LinearLayoutManager(context)
         companyListBinding.menuDelete.setOnClickListener {
             showDeleteAlert()
-        }
-        companyListBinding.shareIcon.setOnClickListener {
-//            showShareAlert()
         }
         hikeViewModel.getHikes().observe(this, Observer {
             if (it.isNotEmpty()){
@@ -255,14 +249,6 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
 
     override fun HideDeleteIcon() {
         companyListBinding.menuDelete.visibility = View.GONE
-    }
-
-    override fun showShareIcon(){
-        companyListBinding.shareIcon.visibility = View.VISIBLE
-    }
-
-    override fun HideShareIcon() {
-        companyListBinding.shareIcon.visibility = View.GONE
     }
 
     override fun deleteHiker(deleteHikes: ArrayList<HikeEntity>) {

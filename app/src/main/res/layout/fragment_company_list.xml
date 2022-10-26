@@ -31,18 +31,6 @@
                 android:layout_marginTop="10dp"
                 />
 
-            <ImageView
-                android:id="@+id/share_icon"
-                android:layout_width="30dp"
-                android:src="@drawable/ic_share"
-                android:layout_height="30dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginEnd="60dp"
-                android:layout_marginTop="10dp"
-                android:visibility="invisible"
-                />
-
             <TextView
                 android:id="@+id/noHikesTxt"
                 android:layout_height="wrap_content"

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.hiker.model.HikeEntity
 import com.example.hiker.model.HikeRepository
+import com.example.hiker.utils.Component
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -16,7 +17,7 @@ class MainViewModel(val hikeRepository: HikeRepository) : ViewModel(){
     var isCompanyNameProper = false
     var isComponentAdd = false
     lateinit var symbol : String
-    var addComponentRedundentList = ArrayList<String>()
+    var addComponentRedundentList = ArrayList<Component>()
     init {
         allHikes = hikeRepository.getAllHikes()
     }

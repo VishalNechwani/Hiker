@@ -123,8 +123,6 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
         materialDeleteAlert = MaterialAlertDialogBuilder(context!!)
         deleteButton = salaryComponentBinding.deleteCo
         deleteButton.isEnabled = false
-//        deleteIcon = salaryComponentBinding.menuDeleteSalaryPreview
-//        deleteIcon.visibility = View.GONE
         hikerMap = HashMap()
         progressCircle.visibility = View.GONE
         val finalInHand = salaryComponentBinding.finalInHandButton
@@ -155,6 +153,7 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
         //iterating throughout the array
         val n = counter
         for(item in arrComponent){
+            hikeViewModel.addComponentRedundentList.add(item)
             hikerMap.put(counter++,item)
         }
         compAdapter = SalaryComponentAdapter(hikerMap,arrComponent,this)
@@ -164,7 +163,7 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
             showingAlert()
         }
         finalInHand.setOnClickListener {
-            calculateFinal(arrComponent)
+            calculateFinal(compAdapter.getFinalComponentList())
 //            showDeleteAlert()
         }
         deleteButton.setOnClickListener {
@@ -304,6 +303,7 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
         addComponentTxtView.setOnClickListener {
             val comName = name.text.toString()
             val comValue = value.text.toString()
+            val tComponent = Component(comName,comValue,true,false)
             if(comName.isEmpty()){
                 errorMessage = "Component Name cannot be null"
                 showingMessage(errorMessage,"#ff0000")
@@ -319,16 +319,28 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
                 showingMessage(errorMessage,"#ff0000")
                 return@setOnClickListener
             }
-            if (hikeViewModel.addComponentRedundentList.contains(comName.toLowerCase())){
+            if (isDuplicateComponentName(comName)){
                 errorMessage = "Component is already added..."
                 showingMessage(errorMessage,"#ff0000")
                 return@setOnClickListener
             }
-            compAdapter.adapterUpdate(Component(comName,comValue,true,false))
-            hikeViewModel.addComponentRedundentList.add(comName.toLowerCase())
+            compAdapter.adapterUpdate(tComponent)
+            hikeViewModel.addComponentRedundentList.add(tComponent)
             alertDialog.dismiss()
         }
       }
+
+    private fun isDuplicateComponentName(comName:String):Boolean{
+        var isDuplicate = false
+        val tComName = comName.toLowerCase()
+        for(each in hikeViewModel.addComponentRedundentList){
+            if(tComName.equals(each.namer.toLowerCase())){
+                isDuplicate = true
+                break
+            }
+        }
+        return isDuplicate
+    }
 
     private fun regexComponentName(value: String): Boolean {
         val regex = Regex("[a-zA-Z\\s]+$")
@@ -397,20 +409,18 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
             }
     }
 
-    override fun showDeleteIcon() {
-        salaryComponentBinding.menuDeleteSalaryPreview.visibility = View.VISIBLE
-    }
-
-    override fun HideDeleteIcon() {
-        salaryComponentBinding.menuDeleteSalaryPreview.visibility = View.GONE
-    }
-
     override fun deleteComponentButtonEnable() {
         deleteButton.isEnabled = true
+        deleteButton.setBackgroundColor(context?.resources!!.getColor(R.color.white))
     }
 
     override fun deleteComponentButtonDisEnable() {
         deleteButton.isEnabled = false
+        deleteButton.setBackgroundColor(context?.resources!!.getColor(R.color.delete_co_button))
+    }
+
+    override fun deleteRedundantComponent(parameter: ArrayList<Component>) {
+        hikeViewModel.addComponentRedundentList.removeAll(parameter)
     }
 
     private fun showDeleteAlert() {

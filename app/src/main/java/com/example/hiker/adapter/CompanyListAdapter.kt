@@ -29,11 +29,6 @@ class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCall
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.cardviewlist, parent, false)
-//        materialAlertDialogBuilder = MaterialAlertDialogBuilder(context)
-//        val alert = materialAlertDialogBuilder.create()
-//        companyListBinding.menuDelete.setOnClickListener {
-//
-//        }
        return ViewHolder(view)
   }
 
@@ -54,7 +49,6 @@ class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCall
             {
                 clickItemShadowing(holder)
                 companyListCallBack.showDeleteIcon()
-                companyListCallBack.showShareIcon()
                 isEnable = true
                 positionHikeArr.add(holder.adapterPosition)
             }
@@ -74,12 +68,6 @@ class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCall
                     positionHikeArr.remove(holder.adapterPosition)
                     clickItemUnShadowing(holder)
                 }
-                if(positionHikeArr.size > 1 || positionHikeArr.size==0){
-                    companyListCallBack.HideShareIcon()
-                }
-                if(positionHikeArr.size == 1){
-                    companyListCallBack.showShareIcon()
-                }
             }else{
                 companyListCallBack.navigateToCompanyShowComponent(holder.adapterPosition,hikeMap.get(holder.adapterPosition))
             }
@@ -95,17 +83,13 @@ class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCall
         val card: CardView = itemView.findViewById(R.id.card_view)
         val companyName: TextView = itemView.findViewById(R.id.company_name)
         val inHandSalary: TextView = itemView.findViewById(R.id.in_hand_salary)
-//        val componentList:RecyclerView = itemView.findViewById(R.id.component_list)
-
     }
 
     private fun clickItemShadowing(holder: CompanyListAdapter.ViewHolder) {
-//        val adapter = holder.adapterPosition
         holder.card.setBackgroundColor(Color.GRAY)
     }
 
     private fun clickItemUnShadowing(holder: CompanyListAdapter.ViewHolder) {
-//        val adapter = holder.adapterPosition
         holder.card.setBackgroundColor(Color.WHITE)
     }
 
@@ -117,6 +101,8 @@ class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCall
             hikeEntityForDelete!!.add(hikeMap.get(eachHikePosition)!!)
             hikeMap.remove(eachHikePosition)
         }
+        isEnable = false
+        companyListCallBack.HideDeleteIcon()
         notifyDataSetChanged()
         companyListCallBack.deleteHiker(hikeEntityForDelete!!)
     }

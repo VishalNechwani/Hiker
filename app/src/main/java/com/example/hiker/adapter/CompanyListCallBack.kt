@@ -7,6 +7,4 @@ interface CompanyListCallBack {
     fun HideDeleteIcon()
     fun deleteHiker(deleteHikes : ArrayList<HikeEntity>)
     fun navigateToCompanyShowComponent(holderPosition : Int,hikeEntity:HikeEntity?)
-    fun HideShareIcon()
-    fun showShareIcon()
 }
