@@ -30,7 +30,7 @@ class MainViewModel(val hikeRepository: HikeRepository) : ViewModel(){
           return hikeRepository.addHike(hikeEntity)
     }
 
-    fun deleteHiker(deleteHikes: ArrayList<HikeEntity>){
+    fun deleteHiker(deleteHikes: ArrayList<Int>){
      //database operation to delete
         GlobalScope.launch {
             withContext(Dispatchers.IO){

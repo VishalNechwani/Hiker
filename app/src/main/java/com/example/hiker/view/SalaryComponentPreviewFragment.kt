@@ -425,7 +425,7 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
 
     private fun showDeleteAlert() {
         val alert = materialDeleteAlert.create()
-        materialDeleteAlert.setMessage("Do you really want to delete this hiker ?")
+        materialDeleteAlert.setMessage("Do you really want to delete this component ?")
         materialDeleteAlert.setPositiveButton(android.R.string.yes){ dialog, which ->
             compAdapter.deleteHikerInAdapter()
         }

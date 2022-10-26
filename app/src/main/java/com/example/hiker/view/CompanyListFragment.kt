@@ -251,9 +251,13 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
         companyListBinding.menuDelete.visibility = View.GONE
     }
 
-    override fun deleteHiker(deleteHikes: ArrayList<HikeEntity>) {
-        hikeViewModel.deleteHiker(deleteHikes)
-    }
+//    override fun deleteHiker(deleteHikes: ArrayList<HikeEntity>) {
+//        hikeViewModel.deleteHiker(deleteHikes)
+//    }
+
+     override fun deleteHiker(deleteHikes: ArrayList<Int>) {
+            hikeViewModel.deleteHiker(deleteHikes)
+        }
 
     override fun navigateToCompanyShowComponent(holderPosition: Int, hikeEntity: HikeEntity?) {
         val bundle = Bundle()

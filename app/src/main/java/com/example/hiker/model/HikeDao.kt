@@ -15,5 +15,5 @@ interface HikeDao {
 
     @TypeConverters(RoomConverters::class)
     @Query("delete from hiker where company_id in (:deleteHike)")
-    fun deleteHike(deleteHike: List<HikeEntity>)
+    fun deleteHike(deleteHike: ArrayList<Int>)
 }

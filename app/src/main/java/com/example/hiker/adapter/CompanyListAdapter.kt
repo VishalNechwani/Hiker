@@ -18,7 +18,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
-class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCallBack: CompanyListCallBack) : RecyclerView.Adapter<CompanyListAdapter.ViewHolder>()  {
+class CompanyListAdapter(var hikeMap:HashMap<Int,HikeEntity>,val companyListCallBack: CompanyListCallBack) : RecyclerView.Adapter<CompanyListAdapter.ViewHolder>()  {
 
 
     var isEnable = false
@@ -44,6 +44,7 @@ class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCall
         holder.inHandSalary.text = currencyFormat(hikeMap.get(position)?.inHandNew!!)
 //        holder.componentList.adapter = CompanyListSubComponentAdapter(hikeMap.get(position).component_arr)
         holder.card.isLongClickable = true
+        clickItemUnShadowing(holder)
         holder.card.setOnLongClickListener {
             if (!isEnable)
             {
@@ -96,15 +97,28 @@ class CompanyListAdapter(val hikeMap:HashMap<Int,HikeEntity>,val companyListCall
     fun deleteHikerInAdapter() {
         //deleting the hiker
         var hikeEntityForDelete: ArrayList<HikeEntity>? = ArrayList()
+        var hikeEntityDeleteId: ArrayList<Int>? = ArrayList()
         var count = 0
         for(eachHikePosition in positionHikeArr){
+            hikeEntityDeleteId?.add(hikeMap.get(eachHikePosition)!!.company_id)
             hikeEntityForDelete!!.add(hikeMap.get(eachHikePosition)!!)
             hikeMap.remove(eachHikePosition)
         }
         isEnable = false
         companyListCallBack.HideDeleteIcon()
         notifyDataSetChanged()
-        companyListCallBack.deleteHiker(hikeEntityForDelete!!)
+        companyListCallBack.deleteHiker(hikeEntityDeleteId!!)
+//        companyListCallBack.deleteHiker(hikeEntityForDelete!!)
+        reArrangeHashMap()
+    }
+
+    private fun reArrangeHashMap() {
+        var i = 0
+        val tHashMap = HashMap<Int,HikeEntity>()
+        for(each in hikeMap){
+            tHashMap.put(i++,each.value)
+        }
+        hikeMap = tHashMap
     }
 
     fun currencyFormat(value:String):String{
