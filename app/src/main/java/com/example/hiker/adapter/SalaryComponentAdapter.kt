@@ -12,8 +12,7 @@ import com.example.hiker.utils.Component
 import com.google.android.material.card.MaterialCardView
 import java.util.HashMap
 
-class SalaryComponentAdapter(var component: HashMap<Int, Component>,val componentArrayList: ArrayList<Component>, val companyListCallBack: SalaryComponentCallBack) : RecyclerView.Adapter<SalaryComponentAdapter.ViewHolder>(){
-
+class SalaryComponentAdapter(val componentArrayList: ArrayList<Component>, val companyListCallBack: SalaryComponentCallBack) : RecyclerView.Adapter<SalaryComponentAdapter.ViewHolder>(){
     var isEnable = false
     var positionHikeArr : ArrayList<Int> =  ArrayList()
     var positionHikerComponent : ArrayList<Component> = ArrayList()
@@ -27,8 +26,8 @@ class SalaryComponentAdapter(var component: HashMap<Int, Component>,val componen
     }
 
     override fun onBindViewHolder(holder: SalaryComponentAdapter.ViewHolder, position: Int) {
-        holder.componentName.text = component.get(position)?.namer
-        holder.componentValue.text = component.get(position)?.valuer
+        holder.componentName.text = componentArrayList.get(position).namer
+        holder.componentValue.text = componentArrayList.get(position).valuer
         holder.card.isLongClickable = true
         clickItemUnShadowing(holder)
         isEnable = false
@@ -39,7 +38,6 @@ class SalaryComponentAdapter(var component: HashMap<Int, Component>,val componen
                 companyListCallBack.deleteComponentButtonEnable()
                 isEnable = true
                 positionHikeArr.add(holder.adapterPosition)
-                positionHikerComponent.add(component.get(holder.adapterPosition)!!)
             }
             return@setOnLongClickListener true
         }
@@ -47,7 +45,6 @@ class SalaryComponentAdapter(var component: HashMap<Int, Component>,val componen
             if (isEnable){
                 if(!positionHikeArr.contains(holder.adapterPosition)){
                     positionHikeArr.add(holder.adapterPosition)
-                    positionHikerComponent.add(component.get(holder.adapterPosition)!!)
                     clickItemShadowing(holder)
                 }
                 else{
@@ -56,7 +53,6 @@ class SalaryComponentAdapter(var component: HashMap<Int, Component>,val componen
                         companyListCallBack.deleteComponentButtonDisEnable()
                     }
                     positionHikeArr.remove(holder.adapterPosition)
-                    positionHikerComponent.remove(component.get(holder.adapterPosition)!!)
                     clickItemUnShadowing(holder)
                 }
             }
@@ -72,12 +68,11 @@ class SalaryComponentAdapter(var component: HashMap<Int, Component>,val componen
     }
 
     override fun getItemCount(): Int {
-        return component.size
+        return componentArrayList.size
     }
 
     fun adapterUpdate(componentUpdate : Component){
-        val n = component.size
-        component.put(n,componentUpdate)
+        val n = componentArrayList.size
         componentArrayList.add(componentUpdate)
         notifyDataSetChanged()
     }
@@ -94,38 +89,15 @@ class SalaryComponentAdapter(var component: HashMap<Int, Component>,val componen
 
     fun deleteHikerInAdapter() {
         //deleting the hiker
-        var hikeEntityForDelete: ArrayList<Component>? = ArrayList()
+        var hikeEntityForDelete: ArrayList<Component> = ArrayList()
         var count = 0
-        componentArrayList.removeAll(positionHikerComponent)
-        rappingCoListToHashMap()
+        for(eachHikePosition in positionHikeArr){
+            hikeEntityForDelete.add(componentArrayList.get(eachHikePosition))
+        }
+        componentArrayList.removeAll(hikeEntityForDelete)
+        positionHikeArr.clear()
         companyListCallBack.deleteComponentButtonDisEnable()
         companyListCallBack.deleteRedundantComponent(positionHikerComponent)
-//        for(eachHikePosition in positionHikeArr){
-//            hikeEntityForDelete!!.add(component.get(eachHikePosition)!!)
-//            component.remove(eachHikePosition)
-//            positionHikeArr.remove(eachHikePosition)
-//        }
-//            val iterator: MutableIterator<Int> = positionHikeArr.iterator()
-//            while (iterator.hasNext()) {
-//                val eachHikePosition = iterator.next()
-//                hikeEntityForDelete!!.add(component.get(eachHikePosition)!!)
-//                component.remove(eachHikePosition)
-//                positionHikeArr.remove(eachHikePosition)
-//            }
-//        component.
         notifyDataSetChanged()
-    }
-
-    private fun rappingCoListToHashMap() {
-        var i = 0
-        var tHashMap = HashMap<Int,Component>()
-        // restructing the HashMap
-        for(each in componentArrayList){
-            tHashMap.put(i++,each)
-        }
-        component = tHashMap
-//        for(each in positionHikerComponent){
-//            component.remove(positionHikeArr.get(i++))
-//        }
     }
 }

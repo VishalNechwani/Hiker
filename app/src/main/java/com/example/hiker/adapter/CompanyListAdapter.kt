@@ -18,8 +18,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
-class CompanyListAdapter(var hikeMap:HashMap<Int,HikeEntity>,val companyListCallBack: CompanyListCallBack) : RecyclerView.Adapter<CompanyListAdapter.ViewHolder>()  {
-
+class CompanyListAdapter(val hikeArrList : ArrayList<HikeEntity>,val companyListCallBack: CompanyListCallBack) : RecyclerView.Adapter<CompanyListAdapter.ViewHolder>()  {
 
     var isEnable = false
     var positionHikeArr : ArrayList<Int> =  ArrayList()
@@ -32,17 +31,9 @@ class CompanyListAdapter(var hikeMap:HashMap<Int,HikeEntity>,val companyListCall
        return ViewHolder(view)
   }
 
-    private fun deleteHiker() {
-        for (position in positionHikeArr){
-            hikeMap.remove(position)
-        }
-        notifyDataSetChanged()
-    }
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.companyName.text = hikeMap.get(position)?.company_name
-        holder.inHandSalary.text = currencyFormat(hikeMap.get(position)?.inHandNew!!)
-//        holder.componentList.adapter = CompanyListSubComponentAdapter(hikeMap.get(position).component_arr)
+        holder.companyName.text = hikeArrList.get(position).company_name
+        holder.inHandSalary.text = currencyFormat(hikeArrList.get(position).inHandNew)
         holder.card.isLongClickable = true
         clickItemUnShadowing(holder)
         holder.card.setOnLongClickListener {
@@ -70,13 +61,13 @@ class CompanyListAdapter(var hikeMap:HashMap<Int,HikeEntity>,val companyListCall
                     clickItemUnShadowing(holder)
                 }
             }else{
-                companyListCallBack.navigateToCompanyShowComponent(holder.adapterPosition,hikeMap.get(holder.adapterPosition))
+                companyListCallBack.navigateToCompanyShowComponent(holder.adapterPosition,hikeArrList.get(holder.adapterPosition))
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return hikeMap.size;
+        return hikeArrList.size;
     }
 
     // Holds the views for adding it to image and text
@@ -96,29 +87,20 @@ class CompanyListAdapter(var hikeMap:HashMap<Int,HikeEntity>,val companyListCall
 
     fun deleteHikerInAdapter() {
         //deleting the hiker
-        var hikeEntityForDelete: ArrayList<HikeEntity>? = ArrayList()
-        var hikeEntityDeleteId: ArrayList<Int>? = ArrayList()
+        val hikeEntityForDelete: ArrayList<HikeEntity> = ArrayList()
+        val hikeEntityDeleteId: ArrayList<Int> = ArrayList()
         var count = 0
         for(eachHikePosition in positionHikeArr){
-            hikeEntityDeleteId?.add(hikeMap.get(eachHikePosition)!!.company_id)
-            hikeEntityForDelete!!.add(hikeMap.get(eachHikePosition)!!)
-            hikeMap.remove(eachHikePosition)
+            hikeEntityDeleteId.add(hikeArrList.get(eachHikePosition).company_id)
+            hikeEntityForDelete.add(hikeArrList.get(eachHikePosition))
         }
+        hikeArrList.removeAll(hikeEntityForDelete)
+        companyListCallBack.deleteHiker(hikeEntityDeleteId)
         isEnable = false
         companyListCallBack.HideDeleteIcon()
+        //clearing all the list as not needed
+        positionHikeArr.clear()
         notifyDataSetChanged()
-        companyListCallBack.deleteHiker(hikeEntityDeleteId!!)
-//        companyListCallBack.deleteHiker(hikeEntityForDelete!!)
-        reArrangeHashMap()
-    }
-
-    private fun reArrangeHashMap() {
-        var i = 0
-        val tHashMap = HashMap<Int,HikeEntity>()
-        for(each in hikeMap){
-            tHashMap.put(i++,each.value)
-        }
-        hikeMap = tHashMap
     }
 
     fun currencyFormat(value:String):String{

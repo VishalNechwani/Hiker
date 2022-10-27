@@ -156,7 +156,7 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
             hikeViewModel.addComponentRedundentList.add(item)
             hikerMap.put(counter++,item)
         }
-        compAdapter = SalaryComponentAdapter(hikerMap,arrComponent,this)
+        compAdapter = SalaryComponentAdapter(arrComponent,this)
         rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv.adapter = compAdapter
         addComponentButton.setOnClickListener {
@@ -164,7 +164,6 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
         }
         finalInHand.setOnClickListener {
             calculateFinal(compAdapter.getFinalComponentList())
-//            showDeleteAlert()
         }
         deleteButton.setOnClickListener {
             showDeleteAlert()

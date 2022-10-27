@@ -102,14 +102,15 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
             showDeleteAlert()
         }
         hikeViewModel.getHikes().observe(this, Observer {
+            var hikeArrayList = ArrayList<HikeEntity>()
             if (it.isNotEmpty()){
                 txtView.visibility = View.GONE
                 rv.visibility = View.VISIBLE
                 val n = counter
                 for(item in it){
-                    hikerMap.put(counter++,item)
+                    hikeArrayList.add(item)
                 }
-                companyListAdapter = CompanyListAdapter(hikerMap,this)
+                companyListAdapter = CompanyListAdapter(hikeArrayList,this)
                 rv.adapter = companyListAdapter
             }else{
                 rv.visibility = View.GONE
