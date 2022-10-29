@@ -13,9 +13,12 @@ import com.google.android.material.card.MaterialCardView
 import java.util.HashMap
 
 class SalaryComponentAdapter(val componentArrayList: ArrayList<Component>, val companyListCallBack: SalaryComponentCallBack) : RecyclerView.Adapter<SalaryComponentAdapter.ViewHolder>(){
+
     var isEnable = false
     var positionHikeArr : ArrayList<Int> =  ArrayList()
     var positionHikerComponent : ArrayList<Component> = ArrayList()
+    var componentTotal = 0
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -28,6 +31,7 @@ class SalaryComponentAdapter(val componentArrayList: ArrayList<Component>, val c
     override fun onBindViewHolder(holder: SalaryComponentAdapter.ViewHolder, position: Int) {
         holder.componentName.text = componentArrayList.get(position).namer
         holder.componentValue.text = componentArrayList.get(position).valuer
+        componentTotal += componentArrayList.get(position).valuer.toInt()
         holder.card.isLongClickable = true
         clickItemUnShadowing(holder)
         isEnable = false
@@ -57,7 +61,11 @@ class SalaryComponentAdapter(val componentArrayList: ArrayList<Component>, val c
                 }
             }
         }
+        if(position == (componentArrayList.size-1)){
+            companyListCallBack.componentTotal(componentTotal)
+        }
     }
+
 
     private fun clickItemShadowing(holder: SalaryComponentAdapter.ViewHolder) {
         holder.card.setBackgroundColor(Color.GRAY)
@@ -75,6 +83,7 @@ class SalaryComponentAdapter(val componentArrayList: ArrayList<Component>, val c
         val n = componentArrayList.size
         componentArrayList.add(componentUpdate)
         notifyDataSetChanged()
+//        companyListCallBack.componentTotal(componentTotal)
     }
 
     fun getFinalComponentList():ArrayList<Component>{
@@ -99,5 +108,6 @@ class SalaryComponentAdapter(val componentArrayList: ArrayList<Component>, val c
         companyListCallBack.deleteComponentButtonDisEnable()
         companyListCallBack.deleteRedundantComponent(positionHikerComponent)
         notifyDataSetChanged()
+//        companyListCallBack.componentTotal(componentTotal)
     }
 }

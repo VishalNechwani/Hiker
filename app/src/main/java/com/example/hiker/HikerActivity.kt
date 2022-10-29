@@ -2,6 +2,7 @@ package com.example.hiker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.hiker.view.CompanyListFragment
 
 class HikerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -10,12 +11,16 @@ class HikerActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val count = fragmentManager.backStackEntryCount
-        if(count == 0) {
-            super.onBackPressed();
-        }
-        else{
-            fragmentManager.popBackStack()
+        val fragment = this.supportFragmentManager.findFragmentById(R.id.companyListFragment)
+        if(fragment is CompanyListFragment){
+           val isVisible = fragment.isVisible
+           if(isVisible){
+              finish()
+           }else{
+               super.onBackPressed()
+           }
+        }else{
+            super.onBackPressed()
         }
     }
 }

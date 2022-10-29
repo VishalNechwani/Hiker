@@ -47,4 +47,5 @@
     <string name="component_amount_error">Component Amount is not equal to CTC, Please make changes in component Amount</string>
     <string name="error_dailog_ok">ok</string>
     <string name="delete_component">delete Component</string>
+    <string name="remaining_component_text">Remaining Component Sum is</string>
 </resources>

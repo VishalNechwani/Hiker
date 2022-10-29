@@ -54,6 +54,46 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
 
+            <TextView
+                android:id="@+id/information_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/informationwithtext"
+                android:textSize="12sp"
+                android:textColor="@color/button_gray"
+                app:layout_constraintStart_toStartOf="@+id/scrollView"
+                app:layout_constraintTop_toBottomOf="@+id/scrollView"
+                />
+
+            <TextView
+                android:id="@+id/information_additional_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:textSize="12sp"
+                android:text="@string/remaining_component_text"
+                android:textColor="#BFBFBF"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/information_symbol"
+                app:layout_constraintTop_toBottomOf="@+id/scrollView"
+                />
+
+            <TextView
+                android:id="@+id/information_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="9dp"
+                android:textStyle="bold"
+                android:text="2000"
+                android:textColor="#BFBFBF"
+                app:layout_constraintStart_toEndOf="@+id/information_additional_info"
+                app:layout_constraintTop_toBottomOf="@+id/scrollView"
+                />
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline_center"
                 android:layout_width="wrap_content"

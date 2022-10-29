@@ -76,7 +76,9 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
     private lateinit var error_message_textview:TextView
     private lateinit var hikerMap:HashMap<Int,Component>
     private lateinit var materialDeleteAlert: MaterialAlertDialogBuilder
-
+    private lateinit var componenttTxtViewSum : TextView
+    private lateinit var componenttTxtViewInfo : TextView
+    private lateinit var componenttTxtViewLogo : TextView
     //salary variables
     var basicPay = 0
     var hra = 0
@@ -123,6 +125,12 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
         materialDeleteAlert = MaterialAlertDialogBuilder(context!!)
         deleteButton = salaryComponentBinding.deleteCo
         deleteButton.isEnabled = false
+        componenttTxtViewSum = salaryComponentBinding.informationText
+        componenttTxtViewInfo = salaryComponentBinding.informationAdditionalInfo
+        componenttTxtViewLogo = salaryComponentBinding.informationSymbol
+        componenttTxtViewSum.visibility = View.INVISIBLE
+        componenttTxtViewInfo.visibility = View.INVISIBLE
+        componenttTxtViewLogo.visibility = View.INVISIBLE
         hikerMap = HashMap()
         progressCircle.visibility = View.GONE
         val finalInHand = salaryComponentBinding.finalInHandButton
@@ -420,6 +428,20 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
 
     override fun deleteRedundantComponent(parameter: ArrayList<Component>) {
         hikeViewModel.addComponentRedundentList.removeAll(parameter)
+    }
+
+    override fun componentTotal(componentTotal: Int) {
+        if(componentTotal!=ctc){
+            componenttTxtViewInfo.visibility = View.VISIBLE
+            componenttTxtViewLogo.visibility = View.VISIBLE
+            componenttTxtViewSum.visibility = View.VISIBLE
+            componenttTxtViewSum.text = (ctc - componentTotal).toString()
+        }else{
+            componenttTxtViewSum.visibility = View.INVISIBLE
+            componenttTxtViewInfo.visibility = View.INVISIBLE
+            componenttTxtViewLogo.visibility = View.INVISIBLE
+            componenttTxtViewSum.visibility = View.INVISIBLE
+        }
     }
 
     private fun showDeleteAlert() {

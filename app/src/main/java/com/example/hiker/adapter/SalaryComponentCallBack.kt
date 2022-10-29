@@ -8,4 +8,5 @@ interface SalaryComponentCallBack {
     fun deleteComponentButtonEnable()
     fun deleteComponentButtonDisEnable()
     fun deleteRedundantComponent(parameter: ArrayList<Component>)
+    fun componentTotal(componentTotal : Int)
 }
