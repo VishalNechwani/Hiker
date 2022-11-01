@@ -2,6 +2,7 @@ package com.example.hiker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.fragment.NavHostFragment
 import com.example.hiker.view.CompanyListFragment
 
 class HikerActivity : AppCompatActivity() {
@@ -11,8 +12,9 @@ class HikerActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val fragment = this.supportFragmentManager.findFragmentById(R.id.companyListFragment)
-        if(fragment is CompanyListFragment){
+//        val fragment = this.supportFragmentManager.findFragmentById(R.id.companyListFragment)
+        val fragment = this.supportFragmentManager.fragments.first()
+        if(fragment is NavHostFragment){
            val isVisible = fragment.isVisible
            if(isVisible){
               finish()

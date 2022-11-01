@@ -12,12 +12,12 @@ import com.example.hiker.utils.Component
 import com.google.android.material.card.MaterialCardView
 import java.util.HashMap
 
-class SalaryComponentAdapter(val componentArrayList: ArrayList<Component>, val companyListCallBack: SalaryComponentCallBack) : RecyclerView.Adapter<SalaryComponentAdapter.ViewHolder>(){
+class SalaryComponentAdapter(val componentArrayList: ArrayList<Component>,val cTotal : Int,val companyListCallBack: SalaryComponentCallBack) : RecyclerView.Adapter<SalaryComponentAdapter.ViewHolder>(){
 
     var isEnable = false
     var positionHikeArr : ArrayList<Int> =  ArrayList()
     var positionHikerComponent : ArrayList<Component> = ArrayList()
-    var componentTotal = 0
+    var componentTotal = cTotal
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -31,7 +31,7 @@ class SalaryComponentAdapter(val componentArrayList: ArrayList<Component>, val c
     override fun onBindViewHolder(holder: SalaryComponentAdapter.ViewHolder, position: Int) {
         holder.componentName.text = componentArrayList.get(position).namer
         holder.componentValue.text = componentArrayList.get(position).valuer
-        componentTotal += componentArrayList.get(position).valuer.toInt()
+//        componentTotal += componentArrayList.get(position).valuer.toInt()
         holder.card.isLongClickable = true
         clickItemUnShadowing(holder)
         isEnable = false
@@ -61,9 +61,9 @@ class SalaryComponentAdapter(val componentArrayList: ArrayList<Component>, val c
                 }
             }
         }
-        if(position == (componentArrayList.size-1)){
-            companyListCallBack.componentTotal(componentTotal)
-        }
+//        if(position == (componentArrayList.size-1)){
+//            companyListCallBack.componentTotal(componentTotal)
+//        }
     }
 
 
@@ -83,7 +83,8 @@ class SalaryComponentAdapter(val componentArrayList: ArrayList<Component>, val c
         val n = componentArrayList.size
         componentArrayList.add(componentUpdate)
         notifyDataSetChanged()
-//        companyListCallBack.componentTotal(componentTotal)
+        componentTotal = componentTotal + componentUpdate.valuer.toInt()
+        companyListCallBack.componentTotal(componentTotal)
     }
 
     fun getFinalComponentList():ArrayList<Component>{
@@ -99,15 +100,17 @@ class SalaryComponentAdapter(val componentArrayList: ArrayList<Component>, val c
     fun deleteHikerInAdapter() {
         //deleting the hiker
         var hikeEntityForDelete: ArrayList<Component> = ArrayList()
-        var count = 0
+        var tComponentTotal = 0
         for(eachHikePosition in positionHikeArr){
             hikeEntityForDelete.add(componentArrayList.get(eachHikePosition))
+            tComponentTotal += componentArrayList.get(eachHikePosition).valuer.toInt()
         }
         componentArrayList.removeAll(hikeEntityForDelete)
         positionHikeArr.clear()
         companyListCallBack.deleteComponentButtonDisEnable()
         companyListCallBack.deleteRedundantComponent(positionHikerComponent)
         notifyDataSetChanged()
-//        companyListCallBack.componentTotal(componentTotal)
+        componentTotal = componentTotal - tComponentTotal
+        companyListCallBack.componentTotal(componentTotal)
     }
 }

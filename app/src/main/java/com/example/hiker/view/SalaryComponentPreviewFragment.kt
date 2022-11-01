@@ -88,6 +88,7 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
     var professionalTax = 0
     var otherAllowances = 0
     private var counter = 0
+    private var componentTotal = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -161,10 +162,10 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
         //iterating throughout the array
         val n = counter
         for(item in arrComponent){
+            componentTotal += item.valuer.toInt()
             hikeViewModel.addComponentRedundentList.add(item)
-            hikerMap.put(counter++,item)
         }
-        compAdapter = SalaryComponentAdapter(arrComponent,this)
+        compAdapter = SalaryComponentAdapter(arrComponent,componentTotal,this)
         rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv.adapter = compAdapter
         addComponentButton.setOnClickListener {
