@@ -85,5 +85,11 @@ class MainViewModel(val hikeRepository: HikeRepository) : ViewModel(){
     return formattedAmount
     }
 
+    fun hikePercentage(currentCtc:Int,hikeAmount:Int):String{
+        val diff = hikeAmount - currentCtc
+        val hikePercentage = (diff / currentCtc) * 100
+        return hikePercentage.toString()
+    }
+
 
 }

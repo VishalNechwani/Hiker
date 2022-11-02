@@ -169,7 +169,16 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
         rv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv.adapter = compAdapter
         addComponentButton.setOnClickListener {
-            showingAlert()
+            val comp = compAdapter.getFinalComponentList()
+            var value = 0
+            for(component in comp){
+                value += component.valuer.toInt()
+            }
+            if(value != ctc){
+                showingAlert()
+            }else{
+                showingnNonComponentAlert()
+            }
         }
         finalInHand.setOnClickListener {
             calculateFinal(compAdapter.getFinalComponentList())
@@ -240,11 +249,13 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
         val viewTaxOld = finalInhandLayout.findViewById<MaterialTextView>(R.id.taxold)
         val viewSalaryNew = finalInhandLayout.findViewById<MaterialTextView>(R.id.inhandnew)
         val viewSalaryOld = finalInhandLayout.findViewById<MaterialTextView>(R.id.inhandold)
+        val hikePercentageArea = finalInhandLayout.findViewById<MaterialTextView>(R.id.hike_percentage_area)
         builder.setView(finalInhandLayout)
         viewTaxNew.text = currencyFormat(taxesNew.toString())
         viewTaxOld.text = currencyFormat(taxesOld.toString())
         viewSalaryNew.text = currencyFormat(salaryNew.toString())
         viewSalaryOld.text = currencyFormat(salaryOld.toString())
+        hikePercentageArea.text = hikeViewModel.hikePercentage(currentCtc,ctc)
         with(builder){
             setPositiveButton("Save", DialogInterface.OnClickListener {
                     dialog, id -> saveButton()
@@ -337,6 +348,15 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
             alertDialog.dismiss()
         }
       }
+
+    private fun showingnNonComponentAlert() {
+        MaterialAlertDialogBuilder(context!!)
+            .setMessage(resources.getString(R.string.cantaddcomponent))
+            .setPositiveButton(resources.getString(R.string.error_dailog_ok)) { dialog, which ->
+                dialog.dismiss()
+            }
+            .show()
+    }
 
     private fun isDuplicateComponentName(comName:String):Boolean{
         var isDuplicate = false

@@ -66,7 +66,6 @@ class SalaryComponentAdapter(val componentArrayList: ArrayList<Component>,val cT
 //        }
     }
 
-
     private fun clickItemShadowing(holder: SalaryComponentAdapter.ViewHolder) {
         holder.card.setBackgroundColor(Color.GRAY)
     }

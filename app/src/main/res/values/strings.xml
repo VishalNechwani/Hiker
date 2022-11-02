@@ -34,6 +34,7 @@
     <string name="new_regime">New Regime</string>
     <string name="old_regime">Old Regime</string>
     <string name="taxes">Taxes</string>
+    <string name="hikepercentage">Hike Percentage</string>
     <string name="in_hand_only">In Hand</string>
     <string name="calculate_in_hand_only_alert">CALCULATE INHAND</string>
     <string name="cancel_alert">CANCEL</string>
@@ -45,6 +46,7 @@
     <string name="image_background">imagebackground</string>
     <string name="salary_info">This salary is excluded investment, Investing money will increase your inhand...</string>
     <string name="component_amount_error">Component Amount is not equal to CTC, Please make changes in component Amount</string>
+    <string name="cantaddcomponent">You can\'t add component. "For Adding Component : You need to make an adjustment in the component list first"</string>
     <string name="error_dailog_ok">ok</string>
     <string name="delete_component">delete Component</string>
     <string name="remaining_component_text">Remaining Component Sum is</string>
