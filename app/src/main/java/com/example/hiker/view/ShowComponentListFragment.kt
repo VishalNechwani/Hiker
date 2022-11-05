@@ -46,6 +46,8 @@ class ShowComponentListFragment : Fragment() {
     private lateinit var salaryNewSymbol : TextView
     private lateinit var taxOldSymbol : TextView
     private lateinit var taxNewSymbol : TextView
+    private lateinit var hikePercentageArea : TextView
+    private lateinit var hikePercentageStr : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +80,9 @@ class ShowComponentListFragment : Fragment() {
         salaryOld = showComponentBinding.montlyIncomeOld
         taxNew = showComponentBinding.tax
         taxOld = showComponentBinding.taxOld
+        hikePercentageArea =  showComponentBinding.hikePercentageValue
+        hikePercentageStr = param1!!.hikeAmount
+        hikePercentageArea.text = hikePercentageStr
         //       symbol
         salaryNewSymbol = showComponentBinding.montlyIncomeSymbol
         salaryOldSymbol = showComponentBinding.montlyIncomeSymbolOld

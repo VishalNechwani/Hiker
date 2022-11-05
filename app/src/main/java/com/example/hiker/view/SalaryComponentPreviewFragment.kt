@@ -89,6 +89,8 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
     var otherAllowances = 0
     private var counter = 0
     private var componentTotal = 0
+    var leaveTravelAllowance = 0
+    var hike_percentage = "0%"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +100,7 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
             currentCtc = Integer.parseInt(it.getString(ARG_PARAM3)!!)
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -136,26 +139,30 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
         progressCircle.visibility = View.GONE
         val finalInHand = salaryComponentBinding.finalInHandButton
         val addComponentButton = salaryComponentBinding.addComponentButton
-        basicPay = (ctc.times(30)).div(100)
+        basicPay = (ctc.times(40)).div(100)
         hra = (basicPay.times(50)).div(100)
         pf = (basicPay.times(12)).div(100)
+        leaveTravelAllowance = (basicPay.times(10)).div(100)
         gratuity = ((basicPay.times(4.81)).div(100)).toInt()
-        medicalInsurance = 7200
+        medicalInsurance = (ctc.times(1)).div(100)
         professionalTax = 2400
-        otherAllowances = (ctc - (basicPay + hra + pf + gratuity+medicalInsurance+professionalTax))
+        otherAllowances = (ctc - (basicPay + hra + (2*pf) + gratuity+medicalInsurance+professionalTax+leaveTravelAllowance))
         val ctcString = ctc.toString()
         val hraString = hra.toString()
         val basicPayString = basicPay.toString()
         val otherAllowancesString = otherAllowances.toString()
         val pfString = pf.toString()
         val gratuityString = gratuity.toString()
-        val medicalInsuranceStr = "7200"
+        val medicalInsuranceStr = medicalInsurance.toString()
         val professionalTaxStr = "2400"
+        val leaveTravelAllowanceStr = leaveTravelAllowance.toString()
         arrComponent = ArrayList<Component>();
         arrComponent.add(Component("Basic Pay", basicPayString, true,false))
         arrComponent.add(Component("HRA", hraString, true,false))
+        arrComponent.add(Component("Leave Allowances", leaveTravelAllowanceStr, true,false))
         arrComponent.add(Component("Other Allowances", otherAllowancesString, true,false))
-        arrComponent.add(Component("PF", pfString, false,false))
+        arrComponent.add(Component("Employer PF", pfString, false,false))
+        arrComponent.add(Component("Employee PF", pfString, false,false))
         arrComponent.add(Component("Gratuity", gratuityString, false,false))
         arrComponent.add(Component("Medical Insurance",medicalInsuranceStr,false,false))
         arrComponent.add(Component("Professional Tax",professionalTaxStr,false,false))
@@ -234,8 +241,8 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
         val regimeOld = REGIME.OLD_TAX_REGIME
         var i = 0
         //calculation
-        val gross_salary = ctc - pf - gratuity
-        var taxableIncome = ctc - gratuity
+        val gross_salary = ctc - pf - gratuity - medicalInsurance
+        val taxableIncome = basicPay + hra + leaveTravelAllowance + otherAllowances
         val taxPercentagesNew = taxCalculation(taxableIncome,regimeNew)
         val taxPercentagesOld = taxCalculation(taxableIncome,regimeOld)
         taxesNew = ((taxableIncome-500000) * taxPercentagesNew)/100
@@ -255,7 +262,8 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
         viewTaxOld.text = currencyFormat(taxesOld.toString())
         viewSalaryNew.text = currencyFormat(salaryNew.toString())
         viewSalaryOld.text = currencyFormat(salaryOld.toString())
-        hikePercentageArea.text = hikeViewModel.hikePercentage(currentCtc,ctc)
+        hike_percentage = hikeViewModel.hikePercentage(currentCtc.toDouble(),ctc.toDouble())
+        hikePercentageArea.text = hike_percentage
         with(builder){
             setPositiveButton("Save", DialogInterface.OnClickListener {
                     dialog, id -> saveButton()
@@ -287,7 +295,7 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
     }
 
     private fun saveButton() {
-        val hike = HikeEntity(0,companyName!!,arrComponent,currentCtc.toString(),ctc.toString(),salaryNew.toString(),salaryOld.toString(),taxesOld.toString(),taxesNew.toString())
+        val hike = HikeEntity(0,companyName!!,arrComponent,currentCtc.toString(),ctc.toString(),salaryNew.toString(),salaryOld.toString(),taxesOld.toString(),taxesNew.toString(),hike_percentage)
         AsyncTaskForSave().execute(hike)
     }
 

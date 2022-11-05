@@ -17,12 +17,14 @@ data class HikeEntity(
     @ColumnInfo(name = "in_hand_new") var inHandNew: String,
     @ColumnInfo(name = "in_hand_old") var inHandOld: String,
     @ColumnInfo(name = "regime_old") var inRegimeOld: String,
-    @ColumnInfo(name = "regime_new") var inRegimeNew: String
+    @ColumnInfo(name = "regime_new") var inRegimeNew: String,
+    @ColumnInfo(name = "hike_amount") var hikeAmount: String
     ): Parcelable{
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString()!!,
         parcel.createTypedArrayList(Component.CREATOR)?:ArrayList(),
+        parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
@@ -44,6 +46,7 @@ data class HikeEntity(
         parcel.writeString(inHandOld)
         parcel.writeString(inRegimeOld)
         parcel.writeString(inRegimeNew)
+        parcel.writeString(hikeAmount)
     }
 
     override fun describeContents(): Int {

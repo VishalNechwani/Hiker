@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
     >
 
     <TableLayout android:id="@+id/tabla_cuerpo"
@@ -112,48 +114,56 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"/>
 
         </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="3"
-            >
-
-            <TextView
-                android:id="@+id/hike_percentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/cell_shape"
-                android:padding="5dp"
-                android:text="@string/hikepercentage"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                />
-
-            <TextView
-                android:id="@+id/hike_percentage_area"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/cell_shape"
-                android:gravity="center"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:textStyle="bold"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_weight="3"
-                />
-
-        </TableRow>
     </TableLayout>
+
+    <TextView
+        android:id="@+id/hike_percentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="13sp"
+        android:text="@string/hike_percentage"
+        android:textColor="#BFBFBF"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/tabla_cuerpo"
+        app:layout_constraintTop_toBottomOf="@+id/tabla_cuerpo"
+        />
+
+    <TextView
+        android:id="@+id/hike_percentage_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="8dp"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:textColor="#BFBFBF"
+        app:layout_constraintStart_toEndOf="@+id/hike_percentage"
+        app:layout_constraintTop_toBottomOf="@+id/tabla_cuerpo"
+        />
+
+    <TextView
+        android:id="@+id/information_symbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:drawableLeft="@drawable/informationwithtext"
+        android:textSize="12sp"
+        android:textColor="@color/button_gray"
+        app:layout_constraintStart_toStartOf="@+id/hike_percentage"
+        app:layout_constraintTop_toBottomOf="@+id/hike_percentage"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/salary_info"
-        app:layout_constraintTop_toBottomOf="@+id/tabla_cuerpo"
-        app:layout_constraintStart_toStartOf="@+id/tabla_cuerpo"
-        android:layout_marginTop="18dp"
+        app:layout_constraintTop_toBottomOf="@+id/hike_percentage"
+        app:layout_constraintStart_toEndOf="@+id/information_symbol"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="4dp"
         android:textSize="12sp"
+        android:textStyle="italic"
         android:paddingRight="40dp"
         />
 
