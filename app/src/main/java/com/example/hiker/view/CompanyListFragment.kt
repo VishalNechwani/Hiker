@@ -65,6 +65,7 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
     private lateinit var companyListAdapter : CompanyListAdapter
     private var counter = 0
     var backPressedTime: Long = 0
+    var hikeArrayList : ArrayList<HikeEntity> = ArrayList<HikeEntity>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,7 +103,6 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
             showDeleteAlert()
         }
         hikeViewModel.getHikes().observe(this, Observer {
-            var hikeArrayList = ArrayList<HikeEntity>()
             if (it.isNotEmpty()){
                 txtView.visibility = View.GONE
                 rv.visibility = View.VISIBLE
@@ -145,6 +145,13 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
 
         inHandTextView.setOnClickListener {
             val company = companyNameField.editText?.text.toString()
+            for(item in hikeArrayList){
+              if(item.company_name.toLowerCase().equals(company.toLowerCase())){
+                  errorMessage = "Company Name is duplicate, please add another"
+                  showingMessage(errorMessage,"#ff0000")
+                  return@setOnClickListener
+              }
+            }
             val expectedCtc = expectedCTCField.editText?.text.toString()
             val currentCtc = currentCTCField.editText?.text.toString()
             val regexCompany = regexCompany(company)

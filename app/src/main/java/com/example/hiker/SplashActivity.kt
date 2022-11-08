@@ -14,10 +14,11 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash)
         Handler(Looper.myLooper()!!).postDelayed ({
             val mIntent = Intent(this@SplashActivity, HikerActivity::class.java)
             startActivity(mIntent)
             finish()
-        }, 1000)
+        }, 2000)
     }
 }
