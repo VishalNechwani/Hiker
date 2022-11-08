@@ -12,17 +12,14 @@ class HikerActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-//        val fragment = this.supportFragmentManager.findFragmentById(R.id.companyListFragment)
-        val fragment = this.supportFragmentManager.fragments.first()
-        if(fragment is NavHostFragment){
-           val isVisible = fragment.isVisible
-           if(isVisible){
-              finish()
-           }else{
-               super.onBackPressed()
-           }
-        }else{
-            super.onBackPressed()
+        val navHostFragment = supportFragmentManager.fragments.first() as? NavHostFragment
+        if(navHostFragment != null) {
+            val childFragments = navHostFragment.childFragmentManager.fragments.first()
+            if(childFragments is CompanyListFragment && childFragments.isVisible){
+               finish()
+            }else{
+                super.onBackPressed()
+            }
         }
     }
 }
