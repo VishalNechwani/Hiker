@@ -13,14 +13,14 @@
         <action
             android:id="@+id/action_companyListFragment_to_salaryComponentPreviewFragment"
             app:destination="@id/salaryComponentPreviewFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
+            app:enterAnim="@anim/enter_from_left"
+            app:exitAnim="@anim/enter_from_right"
             app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_companyListFragment_to_showComponentListFragment"
             app:destination="@id/showComponentListFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:enterAnim="@anim/enter_from_left"
+            app:exitAnim="@anim/enter_from_right" />
     </fragment>
     <fragment
         android:id="@+id/salaryComponentPreviewFragment"
@@ -31,7 +31,7 @@
             android:id="@+id/action_salaryComponentPreviewFragment_to_companyListFragment"
             app:destination="@id/companyListFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:exitAnim="@anim/enter_from_right" />
     </fragment>
     <fragment
         android:id="@+id/showComponentListFragment"

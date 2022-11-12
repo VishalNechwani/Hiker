@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    android:layout_marginTop="15dp"
     android:id="@+id/card_view"
-    app:cardCornerRadius="15dp"
-    app:cardElevation="6dp"
     android:clickable="true"
     app:cardUseCompatPadding="true"
     android:focusable="true"
+    android:background="@color/card_color"
+    android:layout_marginBottom="1dp"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +17,6 @@
         android:layout_height="match_parent"
         android:id="@+id/layout"
         >
-
 
         <TextView
             android:id="@+id/company_name"
@@ -46,4 +44,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

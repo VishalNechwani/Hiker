@@ -31,7 +31,6 @@ class SalaryComponentAdapter(val componentArrayList: ArrayList<Component>,val cT
     override fun onBindViewHolder(holder: SalaryComponentAdapter.ViewHolder, position: Int) {
         holder.componentName.text = componentArrayList.get(position).namer
         holder.componentValue.text = componentArrayList.get(position).valuer
-//        componentTotal += componentArrayList.get(position).valuer.toInt()
         holder.card.isLongClickable = true
         clickItemUnShadowing(holder)
         isEnable = false
@@ -61,9 +60,6 @@ class SalaryComponentAdapter(val componentArrayList: ArrayList<Component>,val cT
                 }
             }
         }
-//        if(position == (componentArrayList.size-1)){
-//            companyListCallBack.componentTotal(componentTotal)
-//        }
     }
 
     private fun clickItemShadowing(holder: SalaryComponentAdapter.ViewHolder) {

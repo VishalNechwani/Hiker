@@ -1,5 +1,6 @@
 package com.example.hiker.adapter
 
+import android.content.Context
 import android.graphics.Color
 import android.icu.text.NumberFormat
 import android.os.Build
@@ -18,7 +19,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
-class CompanyListAdapter(val hikeArrList : ArrayList<HikeEntity>,val companyListCallBack: CompanyListCallBack) : RecyclerView.Adapter<CompanyListAdapter.ViewHolder>()  {
+class CompanyListAdapter(val context:Context,val hikeArrList : ArrayList<HikeEntity>,val companyListCallBack: CompanyListCallBack) : RecyclerView.Adapter<CompanyListAdapter.ViewHolder>()  {
 
     var isEnable = false
     var positionHikeArr : ArrayList<Int> =  ArrayList()
@@ -79,6 +80,7 @@ class CompanyListAdapter(val hikeArrList : ArrayList<HikeEntity>,val companyList
 
     private fun clickItemShadowing(holder: CompanyListAdapter.ViewHolder) {
         holder.card.setBackgroundColor(Color.GRAY)
+//        holder.card.setBackgroundColor(context.resources.getColor(R.color.black))
     }
 
     private fun clickItemUnShadowing(holder: CompanyListAdapter.ViewHolder) {

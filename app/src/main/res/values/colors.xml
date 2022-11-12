@@ -11,6 +11,8 @@
     <color name="gray">#E8E8E8</color>
     <color name="button_gray">#BFBFBF</color>
     <color name="delete_co_button">#dedede</color>
-    <color name="roundedBottomSheetPrimaryBackground">#f4f4f4</color>
+    <color name="roundedBottomSheetPrimaryBackground">#f9f9f9</color>
     <color name="roundedBottomSheetPrimaryNavigationBarColor">#FFFFFFFF</color>
+    <color name="platinum_gray">#E5E4E2</color>
+    <color name="card_color">#ffffff</color>
 </resources>

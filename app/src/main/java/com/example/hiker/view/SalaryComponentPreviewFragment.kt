@@ -66,7 +66,7 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
     private lateinit var customAlertDialogView : View
     private lateinit var arrComponent : ArrayList<Component>
     private lateinit var  progressCircle : ProgressBar
-    private lateinit var deleteIcon:ImageView
+    private lateinit var deleteIcon:Button
     private lateinit var deleteButton:Button
     private var taxesNew : Int = 0
     private var taxesOld : Int = 0
@@ -132,6 +132,7 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
         componenttTxtViewSum = salaryComponentBinding.informationText
         componenttTxtViewInfo = salaryComponentBinding.informationAdditionalInfo
         componenttTxtViewLogo = salaryComponentBinding.informationSymbol
+        deleteIcon = salaryComponentBinding.menuDeleteInComponentFragment
         componenttTxtViewSum.visibility = View.INVISIBLE
         componenttTxtViewInfo.visibility = View.INVISIBLE
         componenttTxtViewLogo.visibility = View.INVISIBLE
@@ -191,6 +192,9 @@ class SalaryComponentPreviewFragment : Fragment(),SalaryComponentCallBack {
             calculateFinal(compAdapter.getFinalComponentList())
         }
         deleteButton.setOnClickListener {
+            showDeleteAlert()
+        }
+        deleteIcon.setOnClickListener {
             showDeleteAlert()
         }
     }

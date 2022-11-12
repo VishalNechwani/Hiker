@@ -35,6 +35,7 @@
     <string name="old_regime">Old Regime</string>
     <string name="taxes">Taxes</string>
     <string name="hikepercentage">Hike Percentage</string>
+    <string name="ctc">CTC  = </string>
     <string name="hikepercentagesmall">Hike  = </string>
     <string name="in_hand_only">In Hand</string>
     <string name="calculate_in_hand_only_alert">CALCULATE INHAND</string>

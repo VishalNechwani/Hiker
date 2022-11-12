@@ -1,5 +1,6 @@
 package com.example.hiker.view
 
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -93,12 +94,14 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
     }
 
     private fun initView() {
+        context!!.toast("Click on + icon to Add Hikes")
         rv = companyListBinding.recyclerView
         deleteImg = companyListBinding.menuDelete
         deleteImg.visibility = View.INVISIBLE
         val addButton =  companyListBinding.addButton
         val txtView = companyListBinding.noHikesTxt
         rv.layoutManager = LinearLayoutManager(context)
+        hikeArrayList.clear()
         companyListBinding.menuDelete.setOnClickListener {
             showDeleteAlert()
         }
@@ -110,7 +113,10 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
                 for(item in it){
                     hikeArrayList.add(item)
                 }
-                companyListAdapter = CompanyListAdapter(hikeArrayList,this)
+                if(hikeArrayList.size==1){
+                    context!!.toast("click on individual list to check the Detailed View")
+                }
+                companyListAdapter = CompanyListAdapter(context!!,hikeArrayList,this)
                 rv.adapter = companyListAdapter
             }else{
                 rv.visibility = View.GONE
@@ -259,10 +265,6 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
         companyListBinding.menuDelete.visibility = View.GONE
     }
 
-//    override fun deleteHiker(deleteHikes: ArrayList<HikeEntity>) {
-//        hikeViewModel.deleteHiker(deleteHikes)
-//    }
-
      override fun deleteHiker(deleteHikes: ArrayList<Int>) {
             hikeViewModel.deleteHiker(deleteHikes)
         }
@@ -273,9 +275,8 @@ class CompanyListFragment : Fragment(),CompanyListCallBack {
         findNavController().navigate(R.id.action_companyListFragment_to_showComponentListFragment,bundle)
     }
 
-//    override fun navigateToCompanyShowComponent(holderPosition : Int,hikeEntity:HikeEntity?) {
-//        findNavController().navigate(R.id.action_companyListFragment_to_showComponentListFragment)
-//    }
+    fun Context.toast(message: CharSequence) =
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
 }
 

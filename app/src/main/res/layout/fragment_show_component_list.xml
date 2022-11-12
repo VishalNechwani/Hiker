@@ -37,9 +37,9 @@
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ctc_tag"
             app:cardBackgroundColor="#9c9c9c"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="5dp"
             app:cardCornerRadius="0dp"
             >
 
@@ -74,6 +74,47 @@
 
         </com.google.android.material.card.MaterialCardView>
 
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/ctc_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardBackgroundColor="#9c9c9c"
+            app:cardCornerRadius="0dp"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/ctc_tag_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="@string/ctc"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/ctc_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:textColor="@color/white"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/ctc_tag_text"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
             android:layout_width="wrap_content"
@@ -87,7 +128,7 @@
             android:layout_height="150dp"
             android:layout_marginEnd="15dp"
             app:cardCornerRadius="10dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="50dp"
             app:cardElevation="2dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toTopOf="parent" >
@@ -196,7 +237,7 @@
             android:layout_height="150dp"
             android:layout_marginStart="15dp"
             app:cardCornerRadius="10dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="50dp"
             app:cardElevation="2dp"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toTopOf="parent" >

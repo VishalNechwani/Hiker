@@ -67,6 +67,7 @@ dependencies {
     testImplementation "junit:junit:$junit"
     implementation "androidx.room:room-ktx:$room_db_version"
     implementation 'com.ibm.icu:icu4j:61.1'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.25'
     kapt "androidx.room:room-compiler:$room_db_version"
     androidTestImplementation "androidx.test.ext:junit:$ext_junit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$expresso"
